@@ -1,4 +1,4 @@
-const data = [
+const MEMBER_DATA = [
   {group:"COMMANDER", members:["MATTHEW B WELLINGTON","NATHAN D CASTILLO"]},
   {group:"UNDER OG", members:["ASEP OGYN","JEIXY T LIBRA","KEVIN LIBRA"]},
   {group:"PJ BISNIS", members:["ABIGEL D LIBRA","GAMAS SUDIRO","KUROME NEGAMI","MASH JACK","NOAHAHAY","RURU WANSUW"]},
@@ -11,44 +11,52 @@ const data = [
     "GIO","HENRY","JAY","KAYZEN","KENZO","LUX","MARCEL","NANDO","RAFA","REX","RIZKY","RYAN"
   ]}
 ];
+const REST_NAMES = new Set(["BOPENG D LIBRA","CANDE KIAWAN"]);
 
-const restNames = new Set(["BOPENG D LIBRA","CANDE KIAWAN"]);
-const groupsEl = document.getElementById("groups");
-const searchEl = document.getElementById("search");
-const divisionEl = document.getElementById("division");
-const statusEl = document.getElementById("status");
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const groupsEl = $("groups"), searchEl = $("search"), divisionEl = $("division"), statusEl = $("status");
+  const esc = (s) => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
-function memberRow(name){
-  const rest = restNames.has(name);
-  return `<div class="member-row" data-name="${name.toLowerCase()}">
-    <span class="status-dot ${rest ? "rest" : ""}"></span>
-    <div class="member-name">${name}<span>• SETOR</span></div>
-    <div class="member-right"><span class="badge ${rest ? "rest" : ""}">${rest ? "REHAT" : "AKTIF"}</span></div>
-  </div>`;
-}
+  const all = MEMBER_DATA.reduce((n, g) => n + g.members.length, 0);
+  const rest = MEMBER_DATA.reduce((n, g) => n + g.members.filter(m => REST_NAMES.has(m)).length, 0);
+  const active = all - rest;
+  const ratio = all ? Math.round(active / all * 100) : 0;
+  $("total").textContent = all;
+  $("active").textContent = active;
+  $("rest").textContent = rest;
+  $("ratio").textContent = ratio + "%";
+  $("progress").style.width = ratio + "%";
+  $("all").textContent = all;
 
-function render(){
-  const q = searchEl.value.trim().toLowerCase();
-  const div = divisionEl.value;
-  const status = statusEl.value;
-  let shown = 0;
+  const row = (name) => {
+    const isRest = REST_NAMES.has(name);
+    return `<div class="member-row"><span class="status-dot ${isRest ? "rest" : ""}"></span>` +
+      `<div class="member-name">${esc(name)}<span>• SETOR</span></div>` +
+      `<span class="badge ${isRest ? "rest" : ""}">${isRest ? "REHAT" : "AKTIF"}</span></div>`;
+  };
 
-  groupsEl.innerHTML = data.map(g => {
-    if(div !== "all" && div !== ({
-      "COMMANDER":"commander","UNDER OG":"under","PJ BISNIS":"business","HOODPRESS":"member","MEMBER":"member"
-    })[g.group]) return "";
-    const members = g.members.filter(name => {
-      const matchName = !q || name.toLowerCase().includes(q);
-      const isRest = restNames.has(name);
-      const matchStatus = status === "all" || (status === "rest" ? isRest : !isRest);
-      return matchName && matchStatus;
-    });
-    if(!members.length) return "";
-    shown += members.length;
-    return `<div class="group"><div class="group-title"><span>${g.group}</span><small>${members.length} anggota</small></div>${members.map(memberRow).join("")}</div>`;
-  }).join("");
+  function render(){
+    const q = searchEl.value.trim().toLowerCase();
+    const div = divisionEl.value, st = statusEl.value;
+    let shown = 0, html = "";
+    for (const g of MEMBER_DATA) {
+      if (div !== "all" && div !== g.group) continue;
+      const list = g.members.filter(n =>
+        (!q || n.toLowerCase().includes(q)) &&
+        (st === "all" || (st === "rest") === REST_NAMES.has(n)));
+      if (!list.length) continue;
+      shown += list.length;
+      html += `<div class="group"><div class="group-title"><span>${g.group}</span><small>${list.length} anggota</small></div>${list.map(row).join("")}</div>`;
+    }
+    groupsEl.innerHTML = html || `<div class="none">Tidak ada member yang cocok.</div>`;
+    $("shown").textContent = shown;
+  }
 
-  document.getElementById("shown").textContent = shown;
-}
-[searchEl,divisionEl,statusEl].forEach(el => el.addEventListener("input",render));
-render();
+  let t;
+  searchEl.addEventListener("input", () => { clearTimeout(t); t = setTimeout(render, 120); });
+  divisionEl.addEventListener("change", render);
+  statusEl.addEventListener("change", render);
+  $("recruit").addEventListener("click", () => window.showToast && window.showToast("Fitur rekrut belum tersedia."));
+  render();
+})();
