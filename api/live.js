@@ -131,6 +131,51 @@ async function pool(items, size, fn) {
 }
 
 module.exports = async (req, res) => {
+  const url = new URL(req.url, 'http://x');
+  const debugId = url.searchParams.get('debug');
+
+  if (debugId) {
+    // Mode diagnostik: cek SATU channel dan tampilkan apa yang sebenarnya
+    // diterima dari YouTube, supaya ketahuan kalau responsnya diblokir/
+    // dialihkan ke halaman consent/captcha alih-alih halaman live asli.
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
+      const r = await fetch(`https://www.youtube.com/channel/${debugId}/live`, {
+        redirect: 'follow',
+        signal: ctrl.signal,
+        headers: {
+          'user-agent': UA,
+          'accept-language': 'id-ID,id;q=0.9,en;q=0.8',
+          cookie: 'CONSENT=YES+1; SOCS=CAI'
+        }
+      });
+      clearTimeout(timer);
+      const html = await r.text();
+      const playerResponse = extractJson(html, 'ytInitialPlayerResponse');
+      const details = playerResponse && playerResponse.videoDetails;
+      const microformat = playerResponse && playerResponse.microformat && playerResponse.microformat.playerMicroformatRenderer;
+      res.setHeader('Content-Type', 'application/json; charset=utf-8');
+      res.status(200).send(JSON.stringify({
+        requestedId: debugId,
+        finalUrl: r.url,
+        httpStatus: r.status,
+        htmlLength: html.length,
+        looksLikeConsentWall: html.includes('consent.youtube.com') || html.includes('Before you continue'),
+        looksLikeUnusualTraffic: html.includes('unusual traffic') || html.includes('/sorry/'),
+        foundPlayerResponse: Boolean(playerResponse),
+        videoId: details ? details.videoId : null,
+        videoTitle: details ? details.title : null,
+        isLive_fromVideoDetails: details ? Boolean(details.isLive) : null,
+        isLiveNow_fromMicroformat: microformat && microformat.liveBroadcastDetails ? Boolean(microformat.liveBroadcastDetails.isLiveNow) : null,
+        htmlSnippet: html.slice(0, 600)
+      }, null, 2));
+    } catch (e) {
+      res.status(200).send(JSON.stringify({ requestedId: debugId, error: String(e.message || e) }, null, 2));
+    }
+    return;
+  }
+
   const results = await pool(STREAMERS, CONCURRENCY, check);
   const live = results.filter((r) => r.live).map(({ name, id, videoId, title }) => ({ name, id, videoId, title }));
   const failed = results.filter((r) => !r.ok).length;
