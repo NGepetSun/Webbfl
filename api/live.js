@@ -154,6 +154,7 @@ module.exports = async (req, res) => {
       const html = await r.text();
       const playerResponse = extractJson(html, 'ytInitialPlayerResponse');
       const details = playerResponse && playerResponse.videoDetails;
+      const status = playerResponse && playerResponse.playabilityStatus;
       const microformat = playerResponse && playerResponse.microformat && playerResponse.microformat.playerMicroformatRenderer;
       res.setHeader('Content-Type', 'application/json; charset=utf-8');
       res.status(200).send(JSON.stringify({
@@ -164,6 +165,9 @@ module.exports = async (req, res) => {
         looksLikeConsentWall: html.includes('consent.youtube.com') || html.includes('Before you continue'),
         looksLikeUnusualTraffic: html.includes('unusual traffic') || html.includes('/sorry/'),
         foundPlayerResponse: Boolean(playerResponse),
+        playerResponseKeys: playerResponse ? Object.keys(playerResponse) : [],
+        playabilityStatus_status: status ? status.status : null,
+        playabilityStatus_reason: status ? status.reason : null,
         videoId: details ? details.videoId : null,
         videoTitle: details ? details.title : null,
         isLive_fromVideoDetails: details ? Boolean(details.isLive) : null,
