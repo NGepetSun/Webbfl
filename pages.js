@@ -2,28 +2,117 @@
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
-  /* ---------- LIVE ---------- */
-  const L = SITE.live;
-  const yt = $("ytChannel");
-  if (L.channelUrl) { yt.href = L.channelUrl; yt.removeAttribute("data-action"); }
-  const player = $("player");
-  if (L.videoId) {
-    // Facade: iframe YouTube baru dimuat saat diklik, jadi halaman tetap ringan.
-    player.innerHTML = `<button class="play" type="button" aria-label="Putar video">
-      <img src="https://i.ytimg.com/vi/${esc(L.videoId)}/hqdefault.jpg" alt="" loading="lazy">
-      <span class="play-btn"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M8 5v14l11-7z"/></svg></span></button>`;
-    player.firstElementChild.addEventListener("click", () => {
-      player.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(L.videoId)}?autoplay=1&rel=0" title="Live stream MFL" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
-    });
-  } else {
-    player.innerHTML = `<div class="offline"><img src="assets/logo.webp" alt="" width="120" height="155"><b>OFFLINE</b><span>Belum ada siaran. Cek jadwal di samping.</span></div>`;
-  }
-  $("liveStatus").className = "status " + (L.isLive ? "on" : "off");
-  $("liveStatus").textContent = L.isLive ? "LIVE" : "OFFLINE";
-  $("liveTitle").textContent = L.title;
-  $("scheduleList").innerHTML = L.schedule.length
-    ? L.schedule.map(s => `<div class="sch"><div class="sch-day"><b>${esc(s.day)}</b><small>${esc(s.date || "")}</small></div><div><strong>${esc(s.title)}</strong><span>${esc(s.time)}</span></div></div>`).join("")
-    : `<div class="none">Jadwal belum tersedia.</div>`;
+  /* ---------- LIVE (menampilkan streamer yang sedang live, bukan jadwal) ---------- */
+  (() => {
+    const player = $("player"), listEl = $("liveList");
+    const homeLive = $("homeLive"), homeRec = $("homeRec"), homeCount = $("homeLiveCount"), homeNames = $("homeLiveNames");
+    const countEl = $("liveCount"), updatedEl = $("liveUpdated");
+    const offCountEl = $("offCount"), offListEl = $("offList");
+    const refreshBtn = $("liveRefresh");
+    const statusEl = $("liveStatus"), titleEl = $("liveTitle"), whoEl = $("liveWho"), openEl = $("liveOpen");
+    if (!player) return; // halaman Live tidak ada di DOM ini
+
+    let data = null, selected = null;
+
+    const fmtTime = (iso) => {
+      try { return new Date(iso).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }); }
+      catch { return ""; }
+    };
+
+    function playFacade(item) {
+      player.innerHTML = `<button class="play" type="button" aria-label="Putar live ${esc(item.name)}">
+        <img src="https://i.ytimg.com/vi/${esc(item.videoId)}/hqdefault.jpg" alt="" loading="lazy">
+        <span class="play-btn"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M8 5v14l11-7z"/></svg></span></button>`;
+      player.firstElementChild.addEventListener("click", () => {
+        player.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(item.videoId)}?autoplay=1&rel=0" title="Live ${esc(item.name)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+      });
+    }
+
+    function showOffline(msg) {
+      player.innerHTML = `<div class="offline"><img src="assets/logo.webp" alt="" width="96" height="124"><b>TIDAK ADA YANG LIVE</b><span>${esc(msg || "Belum ada streamer MFL yang siaran saat ini.")}</span></div>`;
+      statusEl.className = "status off"; statusEl.textContent = "OFFLINE";
+      titleEl.textContent = ""; whoEl.textContent = ""; openEl.hidden = true;
+    }
+
+    function select(item) {
+      selected = item;
+      playFacade(item);
+      statusEl.className = "status on"; statusEl.textContent = "LIVE";
+      titleEl.textContent = item.title || "(tanpa judul)";
+      whoEl.textContent = "oleh " + item.name;
+      openEl.hidden = false;
+      openEl.href = `https://www.youtube.com/watch?v=${encodeURIComponent(item.videoId)}`;
+      [...listEl.children].forEach(el => el.classList.toggle("active", el.dataset.id === item.id));
+    }
+
+    function render() {
+      const liveList = (data && data.live) || [];
+      countEl.textContent = liveList.length;
+
+      listEl.innerHTML = liveList.length ? liveList.map(it => `
+        <button type="button" class="live-item" data-id="${esc(it.id)}">
+          <span class="thumb"><img src="https://i.ytimg.com/vi/${esc(it.videoId)}/mqdefault.jpg" alt="" loading="lazy"></span>
+          <span class="info"><span class="nm">${esc(it.name)}</span><span class="tt">${esc(it.title || "")}</span></span>
+        </button>`).join("") : `<div class="none">Belum ada yang live.</div>`;
+
+      listEl.querySelectorAll(".live-item").forEach(el => {
+        el.addEventListener("click", () => {
+          const it = liveList.find(l => l.id === el.dataset.id);
+          if (it) select(it);
+        });
+      });
+
+      if (liveList.length) {
+        const keep = selected && liveList.find(l => l.id === selected.id);
+        select(keep || liveList[0]);
+      } else {
+        selected = null;
+        showOffline();
+      }
+
+      const liveIds = new Set(liveList.map(l => l.id));
+      const offline = (typeof STREAMERS !== "undefined" ? STREAMERS : []).filter(s => !liveIds.has(s.id));
+      offCountEl.textContent = offline.length;
+      offListEl.innerHTML = offline.map(s =>
+        `<a href="https://www.youtube.com/channel/${esc(s.id)}" target="_blank" rel="noopener noreferrer">${esc(s.name)}</a>`).join("");
+
+      updatedEl.textContent = data
+        ? "Diperbarui " + fmtTime(data.updated) + (data.failed ? ` · ${data.failed} channel gagal dicek` : "")
+        : "";
+
+      /* ringkasan di Home */
+      if (homeLive) {
+        if (liveList.length) {
+          homeLive.hidden = false; homeRec.hidden = false;
+          homeCount.textContent = liveList.length + " LIVE";
+          homeNames.textContent = liveList.slice(0, 3).map(l => l.name).join(", ") + (liveList.length > 3 ? ", ..." : "");
+        } else {
+          homeLive.hidden = true;
+        }
+      }
+    }
+
+    async function load() {
+      updatedEl.textContent = "Memeriksa channel...";
+      try {
+        const res = await fetch("/api/live", { cache: "no-store" });
+        if (!res.ok) throw new Error("bad status");
+        data = await res.json();
+        render();
+      } catch {
+        if (data) { updatedEl.textContent = "Gagal memperbarui. Menampilkan data terakhir."; return; }
+        listEl.innerHTML = `<div class="none">Tidak bisa memeriksa status live saat ini.</div>`;
+        showOffline("Tidak bisa memeriksa status live saat ini.");
+        updatedEl.textContent = "Gagal memeriksa status live.";
+        offCountEl.textContent = "0"; offListEl.innerHTML = "";
+      }
+    }
+
+    refreshBtn.addEventListener("click", load);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) load(); });
+    load();
+    setInterval(() => { if (!document.hidden) load(); }, 60000);
+  })();
 
   /* ---------- GALLERY ---------- */
   const items = SITE.gallery;

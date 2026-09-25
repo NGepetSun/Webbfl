@@ -1,0 +1,295 @@
+/* Daftar streamer BFL untuk halaman Live. Tambah/ubah/hapus entri di sini. */
+const STREAMERS = [
+ {
+  "name": "Ronny Bons",
+  "id": "UCJTq8YQXj-2_BNgwis4SGsg"
+ },
+ {
+  "name": "Kepal XTube",
+  "id": "UCs3h9L9WGWx4sEewUWp_bYQ"
+ },
+ {
+  "name": "Alexa cihuyyy",
+  "id": "UC_T3McVHAUlLfpA6v8JVqvA"
+ },
+ {
+  "name": "bhinneka",
+  "id": "UCXP0FETbRcnTUKfWKT3MMMQ"
+ },
+ {
+  "name": "Rigel",
+  "id": "UCpxwg_F4dtqJEnpJ1_IjRTQ"
+ },
+ {
+  "name": "L666",
+  "id": "UCfSzUAtec_V5wDcnhpO2BtQ"
+ },
+ {
+  "name": "depoy",
+  "id": "UCzFMuvYoldcSsAvEhzR0zvA"
+ },
+ {
+  "name": "Kyuzin",
+  "id": "UCZHwiV6NsiV5dqbn4DHaJRw"
+ },
+ {
+  "name": "CingBakar",
+  "id": "UCR2hk03Jzm54sPlFiKMlQ1g"
+ },
+ {
+  "name": "Dean Smithhh",
+  "id": "UCIX-HD9QUZEaAtYsz7yZLlg"
+ },
+ {
+  "name": "Vigovel",
+  "id": "UCwrlAmZnhLOu9f3FaJvYk_Q"
+ },
+ {
+  "name": "gennn",
+  "id": "UCfLQtdWfo0x349wXPGB4OdQ"
+ },
+ {
+  "name": "zaaar",
+  "id": "UCArSnxhpKhVAEsz59qxgUTw"
+ },
+ {
+  "name": "Lica",
+  "id": "UCzRbDnymGdZ3Q76BH319FyQ"
+ },
+ {
+  "name": "BIMA ALVAREZ",
+  "id": "UC1m-4p7PSs-1R5pXeu5-zcg"
+ },
+ {
+  "name": "KinKin",
+  "id": "UCRZ68rP5E5JUVXlQDOQajSw"
+ },
+ {
+  "name": "RachaelTv",
+  "id": "UC3QgyfaVyrMrtAWiD-LEznw"
+ },
+ {
+  "name": "amey",
+  "id": "UCFIVpDe3Va4-zyqU7X1OmyQ"
+ },
+ {
+  "name": "buaya kayang",
+  "id": "UCeC4g-1WDyASRbUCR581LcA"
+ },
+ {
+  "name": "Asep Ongyn",
+  "id": "UCKbz0Mcaanj2GCicGEzMpWw"
+ },
+ {
+  "name": "Moozzyy",
+  "id": "UCwsSJX4pMzs_Mw13g29P8rA"
+ },
+ {
+  "name": "Moza ends u",
+  "id": "UCoHosix7V3Zd411FgDsG3cg"
+ },
+ {
+  "name": "Cahya Dwi44",
+  "id": "UCtlEqXdxdoc4xYr6cHX9-Fg"
+ },
+ {
+  "name": "Nathannidek",
+  "id": "UC0mPJmfyM0pyysqo____vrg"
+ },
+ {
+  "name": "thoriqzi",
+  "id": "UC6NHHEHU9_ryxdcX8Evpvwg"
+ },
+ {
+  "name": "Idinzzz",
+  "id": "UCNhLmDbzYe3O06juIuqUtDg"
+ },
+ {
+  "name": "Cikko.",
+  "id": "UCec5C8MqoL-Ap21K_xassLA"
+ },
+ {
+  "name": "John",
+  "id": "UCgrOxB6ZNPQeWJ1PpIHjXlQ"
+ },
+ {
+  "name": "Bengbeng",
+  "id": "UCMcOg9uqZd1_5B8d8U1F-HQ"
+ },
+ {
+  "name": "ROBBEYUU",
+  "id": "UChQbgqNc8MARGDS17qmXiVw"
+ },
+ {
+  "name": "supergarren",
+  "id": "UCTU72lWHiTf6OQr3XM2-_ug"
+ },
+ {
+  "name": "Noahahay",
+  "id": "UCoxYH2IbvTZFCph-FrMXN4A"
+ },
+ {
+  "name": "elmiraa",
+  "id": "UC8zU0IoT0C9DX2CS45i-YxA"
+ },
+ {
+  "name": "Eko D Libra",
+  "id": "UCb9tHaLY3XFM6V2Is_Z2R6A"
+ },
+ {
+  "name": "Adittroll",
+  "id": "UC9jZ5Wa13rtmCa7Gi1C94aQ"
+ },
+ {
+  "name": "Dimas Prayoga Akbar",
+  "id": "UCvrhggVJsdR6uYvuIrX_Grg"
+ },
+ {
+  "name": "Nanzzz",
+  "id": "UC-x7sdu_4FNa5fsGDr3nfbQ"
+ },
+ {
+  "name": "belum mandi",
+  "id": "UCl9gAwNjwLe79bPwYkWBRmg"
+ },
+ {
+  "name": "skytod",
+  "id": "UCQCAaapx-XjDSW3ZBYbtijg"
+ },
+ {
+  "name": "FRY PHENG",
+  "id": "UCavU3T-BImSp5H7KnqNpp_Q"
+ },
+ {
+  "name": "N3R0",
+  "id": "UCRUXDUIUU-IaitVNr7jPvFQ"
+ },
+ {
+  "name": "Biwaaa",
+  "id": "UCjXtiMRdCpV7_PrC0wOyq7Q"
+ },
+ {
+  "name": "Dhann",
+  "id": "UCCyuhouURxPriprA9ThkPSw"
+ },
+ {
+  "name": "VicToR eL Morvinho",
+  "id": "UChz8kZ9ZVgjm_62nG0z0m3w"
+ },
+ {
+  "name": "gga",
+  "id": "UCz1wxbtCbHTCJ7fN4sEBxVQ"
+ },
+ {
+  "name": "Fajri",
+  "id": "UCTwlQyBVGpwAD3DuIyDJ88Q"
+ },
+ {
+  "name": "a bee gel",
+  "id": "UCBu6n7CY3k_HdX8THmyEOEw"
+ },
+ {
+  "name": "Danny",
+  "id": "UCZHSRSIP9m2uxOAOlVJGytw"
+ },
+ {
+  "name": "deepannn",
+  "id": "UCJahERBIhk8ujHbUlm_Heng"
+ },
+ {
+  "name": "PJ Time",
+  "id": "UCKUAoZWFYyaBme-GEPUsLAA"
+ },
+ {
+  "name": "ValdiHEHE",
+  "id": "UC8eyfUV6IsMjk4Sr3O-v_dw"
+ },
+ {
+  "name": "DunZ",
+  "id": "UC95gQq1SmXLVprQ6j_eCk2Q"
+ },
+ {
+  "name": "Arss Sena",
+  "id": "UCkS-KWabpdvIW_QYHyWAhUw"
+ },
+ {
+  "name": "ZeFrowe",
+  "id": "UCdsrkASxJ8QtG55db06789w"
+ },
+ {
+  "name": "xJejeee",
+  "id": "UCCIDndd7QLZ_476Z3Ut1AfQ"
+ },
+ {
+  "name": "matthewah.",
+  "id": "UCPsJO9sQY3J-lletKdbG2xQ"
+ },
+ {
+  "name": "Rebecca Raluna【 MaPle 】",
+  "id": "UC5hjVCAAi5XBjGgbNnPRuXw"
+ },
+ {
+  "name": "Aaannn",
+  "id": "UCi-ZRMrCafHy93HGiCcXT3A"
+ },
+ {
+  "name": "Ernold Wednes",
+  "id": "UCEq0x4AKSLqzO_OLWrUx3XQ"
+ },
+ {
+  "name": "Efrill Ryanda",
+  "id": "UCbYTibYcG2uCVrr1YGRk7JA"
+ },
+ {
+  "name": "steveninthesky",
+  "id": "UCjJLEC2D8RVnzQmc0BfktIA"
+ },
+ {
+  "name": "Dina Clarity",
+  "id": "UCjpOPvW3HPQroitCftiQaUA"
+ },
+ {
+  "name": "Alle’s Vellura",
+  "id": "UCK3rmnSiiyZ2eQky_Oc-zBA"
+ },
+ {
+  "name": "Salmamanis",
+  "id": "UC_kqZmyACWHVU0Ye6zjg43Q"
+ },
+ {
+  "name": "Syacei",
+  "id": "UCQV0qkau8jIHyn5iRY6bIcg"
+ },
+ {
+  "name": "Nejaaa",
+  "id": "UCZMWtcuK_JBkTSiiFqX9WTA"
+ },
+ {
+  "name": "Quinza Jeane",
+  "id": "UC1WkoQNIxn06y44XEHPckBA"
+ },
+ {
+  "name": "elvanprmn",
+  "id": "UCIyBeSbK8L2XL8-72p8N3qQ"
+ },
+ {
+  "name": "Wansuw",
+  "id": "UCf95hDgTqLOS9dRYL_IIjiA"
+ },
+ {
+  "name": "PaddanG",
+  "id": "UCCBHkKFT-XBsBnzVBrXs5Vw"
+ },
+ {
+  "name": "llolokkk",
+  "id": "UCnweMBYzwWF04XmHy2Cupaw"
+ },
+ {
+  "name": "Blek Blekki",
+  "id": "UCrYph2FaG-TOxrnmLX9pw2A"
+ },
+ {
+  "name": "cyzarine",
+  "id": "UCapfNKYIuTGYmHowvU3k1xg"
+ }
+];

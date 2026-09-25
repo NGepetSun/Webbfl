@@ -1,18 +1,8 @@
 /* ===== EDIT KONTEN DI SINI =====
-   Semua isi halaman Live, Gallery, dan History diatur dari file ini.
-   Entri bertanda "CONTOH" hanyalah isian sementara — ganti atau hapus. */
+   Semua isi halaman Gallery dan History diatur dari file ini.
+   Entri bertanda "CONTOH" hanyalah isian sementara — ganti atau hapus.
+   Daftar streamer untuk halaman Live diatur di streamers.json. */
 const SITE = {
-  live: {
-    channelUrl: "",          // link channel YouTube, contoh: "https://youtube.com/@namachannel"
-    videoId: "",             // ID video/live (bagian setelah v=). Kosongkan jika belum ada.
-    isLive: false,           // true = tampil badge LIVE merah
-    title: "Belum ada siaran berlangsung",
-    schedule: [              // jadwal siaran
-      { day: "SEN", date: "", title: "CONTOH — Judul siaran", time: "20:00 WIB" },
-      { day: "RAB", date: "", title: "CONTOH — Judul siaran", time: "20:00 WIB" },
-      { day: "SAB", date: "", title: "CONTOH — Judul siaran", time: "19:00 WIB" }
-    ]
-  },
   gallery: [                 // src = path gambar, mis. "assets/gallery/foto1.webp"
     { src: "", title: "CONTOH — Momen 1", cat: "Event" },
     { src: "", title: "CONTOH — Momen 2", cat: "Event" },

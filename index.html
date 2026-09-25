@@ -3,23 +3,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#1a0f3f">
+  <meta name="theme-color" content="#0f0f11">
   <meta name="description" content="MAPENDOS FOR LIFE — official home.">
   <title>MAPENDOS FOR LIFE</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body data-page="home">
   <header class="topbar">
-    <a class="brand" href="#home" aria-label="MAPENDOS FOR LIFE home"><span>MAPENDOS</span> FOR LIFE</a>
+    <a class="brand" href="#home" aria-label="MAPENDOS FOR LIFE home"><img src="assets/logo.webp" alt="" width="23" height="30"><span>MAPENDOS FOR LIFE</span></a>
     <nav class="nav" id="nav" aria-label="Main navigation">
       <a href="#home" data-link="home">HOME</a>
       <a href="#member" data-link="member">MEMBER</a>
       <a href="#live" data-link="live">LIVE</a>
       <a href="#gallery" data-link="gallery">GALLERY</a>
       <a href="#history" data-link="history">HISTORY</a>
+      <a class="pill" href="https://discord.gg/qdPSJPzVeq" target="_blank" rel="noopener noreferrer">DISCORD</a>
     </nav>
     <button class="menu" id="menu" aria-label="Buka menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
   </header>
@@ -29,24 +30,31 @@
     <div class="bg" aria-hidden="true">
       <div class="glow glow-a"></div>
       <div class="glow glow-b"></div>
+      <div class="glow glow-c"></div>
       <canvas id="fx"></canvas>
     </div>
+    <img src="assets/logo.webp" alt="Brother For Life / MAPENDOS emblem" class="logo" width="230" height="296" decoding="async" fetchpriority="high">
     <div class="identity">
-      <img src="assets/logo.webp" alt="Brother For Life / MAPENDOS emblem" class="logo" width="230" height="296" decoding="async" fetchpriority="high">
       <div class="copy">
-        <div class="eyebrow"><span>MAPENDOS</span> FOR LIFE</div>
+        <h1 class="eyebrow"><span>Mapendos</span><br>For Life</h1>
         <div class="actions">
           <a class="action discord" href="https://discord.gg/qdPSJPzVeq" target="_blank" rel="noopener noreferrer" data-action="discord">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
             <span>JOIN DISCORD</span>
           </a>
-          <a class="action youtube" href="#" data-action="live">
+          <a class="action youtube" href="#live">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
             <span>LIVE STREAM</span>
           </a>
         </div>
       </div>
     </div>
+    <a class="onair-home" id="homeLive" href="#live" hidden>
+      <small>SIARAN LANGSUNG</small>
+      <span class="big"><span>LIVE</span><i class="rec" id="homeRec" hidden></i></span>
+      <span class="cnt" id="homeLiveCount"></span>
+      <span class="names" id="homeLiveNames"></span>
+    </a>
   </main>
 
   <!-- MEMBER -->
@@ -105,23 +113,32 @@
       <div>
         <div class="kicker">SIARAN LANGSUNG</div>
         <h1>LIVE <b>STREAM</b></h1>
-        <p class="sub">// tonton langsung dari channel MFL</p>
+        <p class="sub">// streamer MFL yang sedang live sekarang</p>
       </div>
-      <a class="action youtube sm" id="ytChannel" href="#" target="_blank" rel="noopener noreferrer" data-action="live">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-        <span>BUKA YOUTUBE</span>
-      </a>
     </section>
     <div class="live-wrap">
       <section>
         <div class="player" id="player"></div>
-        <div class="player-meta"><span class="status" id="liveStatus"></span><strong id="liveTitle"></strong></div>
+        <div class="player-meta">
+          <span class="status" id="liveStatus"></span>
+          <strong id="liveTitle"></strong>
+          <span class="who" id="liveWho"></span>
+          <a class="ghost" id="liveOpen" href="#" target="_blank" rel="noopener noreferrer" hidden>BUKA DI YOUTUBE</a>
+        </div>
       </section>
-      <aside class="schedule">
-        <h2>JADWAL SIARAN</h2>
-        <div id="scheduleList"></div>
+      <aside class="onair">
+        <div class="onair-head"><h2>SEDANG LIVE</h2><span id="liveCount">0</span></div>
+        <div class="live-list" id="liveList"></div>
       </aside>
     </div>
+    <div class="live-tools">
+      <small id="liveUpdated">Memeriksa channel...</small>
+      <button class="ghost" id="liveRefresh" type="button">PERBARUI</button>
+    </div>
+    <details class="offroster">
+      <summary><span>TIDAK SEDANG LIVE<b id="offCount">0</b></span></summary>
+      <div class="off-list" id="offList"></div>
+    </details>
   </main>
 
   <!-- GALLERY -->
@@ -157,6 +174,7 @@
 
   <div class="toast" role="status" aria-live="polite"></div>
   <script src="content.js"></script>
+  <script src="streamers.js"></script>
   <script src="member.js"></script>
   <script src="pages.js"></script>
   <script src="script.js"></script>
