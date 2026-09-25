@@ -48,18 +48,18 @@ const REST_NAMES = new Set(["BOPENG D LIBRA","CANDE KIAWAN"]);
   function render(){
     const q = searchEl.value.trim().toLowerCase();
     const div = divisionEl.value, st = statusEl.value;
-    let shown = 0, html = "";
+    let shown = 0, items = [];
     for (const g of MEMBER_DATA) {
       if (div !== "all" && div !== g.group) continue;
       const list = g.members.filter(n =>
         (!q || n.toLowerCase().includes(q)) &&
         (st === "all" || (st === "rest") === REST_NAMES.has(n)));
-      if (!list.length) continue;
-      shown += list.length;
-      html += `<div class="group"><div class="group-title"><span>${g.group}</span><small>${list.length} anggota</small></div>` +
-        `<div class="group-grid">${list.map(n => card(n, g.group)).join("")}</div></div>`;
+      for (const n of list) items.push({ name: n, group: g.group });
     }
-    groupsEl.innerHTML = html || `<div class="none">Tidak ada member yang cocok.</div>`;
+    shown = items.length;
+    groupsEl.innerHTML = items.length
+      ? `<div class="group-grid">${items.map(it => card(it.name, it.group)).join("")}</div>`
+      : `<div class="none">Tidak ada member yang cocok.</div>`;
     $("shown").textContent = shown;
   }
 
