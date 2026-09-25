@@ -10,9 +10,132 @@
     const offCountEl = $("offCount"), offListEl = $("offList");
     const refreshBtn = $("liveRefresh");
     const statusEl = $("liveStatus"), titleEl = $("liveTitle"), whoEl = $("liveWho"), openEl = $("liveOpen");
+    const singleMeta = $("singleMeta"), multiMeta = $("multiMeta"), multiCountEl = $("multiCount");
+    const multiGrid = $("multiGrid");
+    const multiOpenBtn = $("multiOpen"), multiEditBtn = $("multiEdit"), multiExitBtn = $("multiExit");
+    const multiDialog = $("multiDialog"), multiClose = $("multiClose"), multiSizeOpts = $("multiSizeOpts");
+    const multiPick = $("multiPick"), multiStart = $("multiStart"), multiPickHint = $("multiPickHint");
     if (!player) return; // halaman Live tidak ada di DOM ini
 
     let data = null, selected = null;
+
+    /* ---------- MULTIWATCH ---------- */
+    let multiActive = false;      // sedang menampilkan grid multiwatch?
+    let multiSize = 4;            // 2 / 4 / 6
+    let multiIds = [];            // id channel yang dipilih, urut sesuai slot
+
+    function currentLive() {
+      return (data && data.live) || [];
+    }
+
+    function multiCellFacade(cell, item) {
+      cell.innerHTML = `
+        <span class="cell-label">${esc(item.name)}</span>
+        <button class="play" type="button" aria-label="Putar live ${esc(item.name)}">
+          <img src="https://i.ytimg.com/vi/${esc(item.videoId)}/mqdefault.jpg" alt="" loading="lazy">
+          <span class="play-btn"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M8 5v14l11-7z"/></svg></span>
+        </button>`;
+      cell.querySelector(".play").addEventListener("click", () => {
+        cell.innerHTML = `<span class="cell-label">${esc(item.name)}</span>
+          <iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(item.videoId)}?autoplay=1&rel=0" title="Live ${esc(item.name)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+      });
+    }
+
+    function renderMultiGrid() {
+      const liveList = currentLive();
+      const byId = new Map(liveList.map(l => [l.id, l]));
+      multiGrid.dataset.size = String(multiSize);
+      multiGrid.innerHTML = "";
+      for (let i = 0; i < multiSize; i++) {
+        const cell = document.createElement("div");
+        cell.className = "multi-cell";
+        const chId = multiIds[i];
+        const item = chId ? byId.get(chId) : null;
+        if (item) {
+          multiCellFacade(cell, item);
+        } else {
+          cell.classList.add("empty");
+          cell.textContent = chId ? "Channel ini sudah tidak live" : "Slot kosong";
+        }
+        multiGrid.appendChild(cell);
+      }
+      multiCountEl.textContent = multiIds.filter(id => byId.has(id)).length + " / " + multiSize + " layar aktif";
+    }
+
+    function enterMultiwatch() {
+      multiActive = true;
+      player.hidden = true;
+      singleMeta.hidden = true;
+      multiGrid.hidden = false;
+      multiMeta.hidden = false;
+      renderMultiGrid();
+    }
+
+    function exitMultiwatch() {
+      multiActive = false;
+      multiGrid.hidden = true;
+      multiMeta.hidden = true;
+      player.hidden = false;
+      singleMeta.hidden = false;
+      if (selected) select(selected); else if (currentLive().length) select(currentLive()[0]);
+    }
+
+    function setMultiSize(n) {
+      multiSize = n;
+      [...multiSizeOpts.children].forEach(b => b.classList.toggle("active", Number(b.dataset.size) === n));
+      if (multiIds.length > n) multiIds = multiIds.slice(0, n);
+      renderPickList();
+    }
+
+    function renderPickList() {
+      const liveList = currentLive();
+      if (!liveList.length) {
+        multiPick.innerHTML = `<div class="none">Belum ada yang live untuk dipilih.</div>`;
+        multiStart.disabled = true;
+        return;
+      }
+      const pickedSet = new Set(multiIds);
+      multiPick.innerHTML = liveList.map(it => {
+        const checked = pickedSet.has(it.id);
+        const atLimit = !checked && pickedSet.size >= multiSize;
+        return `<label class="${atLimit ? "disabled" : ""}">
+          <input type="checkbox" value="${esc(it.id)}" ${checked ? "checked" : ""} ${atLimit ? "disabled" : ""}>
+          <span>${esc(it.name)}${it.title ? ` <span style="color:var(--muted)">— ${esc(it.title)}</span>` : ""}</span>
+        </label>`;
+      }).join("");
+      multiPick.querySelectorAll("input").forEach(inp => {
+        inp.addEventListener("change", () => {
+          if (inp.checked) {
+            if (!multiIds.includes(inp.value)) multiIds.push(inp.value);
+          } else {
+            multiIds = multiIds.filter(id => id !== inp.value);
+          }
+          renderPickList();
+        });
+      });
+      multiPickHint.textContent = `${pickedSet.size} / ${multiSize} dipilih`;
+      multiStart.disabled = pickedSet.size === 0;
+    }
+
+    function openMultiDialog() {
+      renderPickList();
+      multiDialog.showModal();
+    }
+
+    multiOpenBtn.addEventListener("click", openMultiDialog);
+    multiEditBtn.addEventListener("click", openMultiDialog);
+    multiClose.addEventListener("click", () => multiDialog.close());
+    multiDialog.addEventListener("click", (e) => { if (e.target === multiDialog) multiDialog.close(); });
+    multiSizeOpts.addEventListener("click", (e) => {
+      const b = e.target.closest(".chip");
+      if (b) setMultiSize(Number(b.dataset.size));
+    });
+    multiStart.addEventListener("click", () => {
+      multiDialog.close();
+      enterMultiwatch();
+    });
+    multiExitBtn.addEventListener("click", exitMultiwatch);
+    setMultiSize(multiSize);
 
     const fmtTime = (iso) => {
       try { return new Date(iso).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }); }
@@ -62,7 +185,9 @@
         });
       });
 
-      if (liveList.length) {
+      if (multiActive) {
+        renderMultiGrid();
+      } else if (liveList.length) {
         const keep = selected && liveList.find(l => l.id === selected.id);
         select(keep || liveList[0]);
       } else {

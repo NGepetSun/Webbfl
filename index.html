@@ -119,11 +119,18 @@
     <div class="live-wrap">
       <section>
         <div class="player" id="player"></div>
-        <div class="player-meta">
+        <div class="multiwatch-grid" id="multiGrid" hidden></div>
+        <div class="player-meta" id="singleMeta">
           <span class="status" id="liveStatus"></span>
           <strong id="liveTitle"></strong>
           <span class="who" id="liveWho"></span>
           <a class="ghost" id="liveOpen" href="#" target="_blank" rel="noopener noreferrer" hidden>BUKA DI YOUTUBE</a>
+        </div>
+        <div class="player-meta" id="multiMeta" hidden>
+          <span class="status on">MULTIWATCH</span>
+          <strong id="multiCount"></strong>
+          <button class="ghost" id="multiEdit" type="button">UBAH PILIHAN</button>
+          <button class="ghost" id="multiExit" type="button">KELUAR MULTIWATCH</button>
         </div>
       </section>
       <aside class="onair">
@@ -133,8 +140,33 @@
     </div>
     <div class="live-tools">
       <small id="liveUpdated">Memeriksa channel...</small>
-      <button class="ghost" id="liveRefresh" type="button">PERBARUI</button>
+      <div class="live-tools-actions">
+        <button class="ghost" id="multiOpen" type="button">MULTIWATCH</button>
+        <button class="ghost" id="liveRefresh" type="button">PERBARUI</button>
+      </div>
     </div>
+
+    <dialog class="multi-dialog" id="multiDialog">
+      <form method="dialog" class="multi-form">
+        <header>
+          <h3>PILIH MULTIWATCH</h3>
+          <button class="lb-close multi-close" id="multiClose" type="button" aria-label="Tutup">&times;</button>
+        </header>
+        <div class="multi-size">
+          <span>Jumlah layar</span>
+          <div class="multi-size-opts" id="multiSizeOpts">
+            <button type="button" class="chip" data-size="2">2</button>
+            <button type="button" class="chip" data-size="4">4</button>
+            <button type="button" class="chip" data-size="6">6</button>
+          </div>
+        </div>
+        <div class="multi-pick" id="multiPick"></div>
+        <footer>
+          <small id="multiPickHint">Pilih channel yang sedang live.</small>
+          <button class="ghost primary" id="multiStart" type="button" disabled>MULAI MULTIWATCH</button>
+        </footer>
+      </form>
+    </dialog>
     <details class="offroster">
       <summary><span>TIDAK SEDANG LIVE<b id="offCount">0</b></span></summary>
       <div class="off-list" id="offList"></div>
