@@ -133,6 +133,53 @@ async function pool(items, size, fn) {
 module.exports = async (req, res) => {
   const url = new URL(req.url, 'http://x');
   const debugId = url.searchParams.get('debug');
+  const debugInnertube = url.searchParams.get('debugInnertube');
+
+  if (debugInnertube) {
+    // Mode diagnostik #2: coba lewat API internal (InnerTube) YouTube dengan
+    // menyamar sebagai aplikasi Android, alih-alih scraping halaman web biasa.
+    // Endpoint "browse" tab Home channel biasanya menonjolkan siaran yang
+    // sedang berlangsung lewat channelFeaturedContentRenderer / badge LIVE.
+    const INNERTUBE_KEY = 'AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8';
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
+      const r = await fetch(`https://www.youtube.com/youtubei/v1/browse?key=${INNERTUBE_KEY}`, {
+        method: 'POST',
+        signal: ctrl.signal,
+        headers: {
+          'content-type': 'application/json',
+          'user-agent': 'com.google.android.youtube/19.09.37 (Linux; U; Android 13) gzip',
+          'x-youtube-client-name': '3',
+          'x-youtube-client-version': '19.09.37'
+        },
+        body: JSON.stringify({
+          context: { client: { clientName: 'ANDROID', clientVersion: '19.09.37', androidSdkVersion: 33, hl: 'en', gl: 'US' } },
+          browseId: debugInnertube
+        })
+      });
+      clearTimeout(timer);
+      const text = await r.text();
+      let json = null;
+      try { json = JSON.parse(text); } catch {}
+      const hasLiveBadge = /"style"\s*:\s*"LIVE"|"text"\s*:\s*"LIVE NOW"|isLiveNow/i.test(text);
+      res.setHeader('Content-Type', 'application/json; charset=utf-8');
+      res.status(200).send(JSON.stringify({
+        requestedId: debugInnertube,
+        httpStatus: r.status,
+        textLength: text.length,
+        parsedOk: Boolean(json),
+        topLevelKeys: json ? Object.keys(json) : [],
+        hasErrorField: json ? Boolean(json.error) : null,
+        errorMessage: json && json.error ? json.error.message : null,
+        hasLiveBadgeGuess: hasLiveBadge,
+        snippet: text.slice(0, 500)
+      }, null, 2));
+    } catch (e) {
+      res.status(200).send(JSON.stringify({ requestedId: debugInnertube, error: String(e.message || e) }, null, 2));
+    }
+    return;
+  }
 
   if (debugId) {
     // Mode diagnostik: cek SATU channel dan tampilkan apa yang sebenarnya
