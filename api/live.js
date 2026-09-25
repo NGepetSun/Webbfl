@@ -1,46 +1,121 @@
 /* Vercel serverless function: GET /api/live
    Mengecek tiap channel di streamers.json lewat halaman /channel/ID/live.
-   Kalau channel sedang live, YouTube mengarahkan halaman itu ke video live-nya. */
+   Kalau channel sedang live, YouTube mengarahkan halaman itu ke video live-nya.
+
+   CATATAN PERBAIKAN:
+   Versi lama menganggap channel "live" hanya dengan mencari teks
+   `"isLive":true` di sembarang tempat pada HTML. Masalahnya field itu juga
+   muncul untuk video yang cuma "jadwal" (premiere/scheduled yang belum
+   mulai) dan bisa ke-cocok ke data video LAIN yang ikut ter-render di
+   halaman (rekomendasi, next-up, dll), bukan video utama channel tsb.
+   Akibatnya: channel yang baru bikin jadwal live ikut muncul sebagai
+   "LIVE", sementara channel yang beneran sedang live kadang tidak
+   terdeteksi.
+
+   Perbaikan: ambil objek JSON `ytInitialPlayerResponse` yang tertanam di
+   halaman (data resmi video utama), lalu cek status dari situ:
+   - microformat.playerMicroformatRenderer.liveBroadcastDetails.isLiveNow
+     -> ini flag paling akurat, true HANYA saat siaran sedang berlangsung
+        (false untuk jadwal yang belum mulai maupun yang sudah selesai).
+   - fallback: videoDetails.isLive === true DAN playabilityStatus.status
+     === "OK" (video benar-benar bisa diputar sekarang, bukan halaman
+     countdown jadwal). */
 const STREAMERS = require('../streamers.json');
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36';
-const CONCURRENCY = 16;
-const TIMEOUT_MS = 6000;
+const CONCURRENCY = 10;
+const TIMEOUT_MS = 9000;
+const RETRIES = 1;
 
-const decode = (s) => s
-  .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&')
-  .replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+/* Ambil objek JSON `var NAMA = {...};` dari HTML dengan menghitung
+   pasangan kurung kurawal (aman terhadap tanda kutip/escape di dalam
+   string), karena regex biasa gampang salah potong pada JSON sebesar ini. */
+function extractJson(html, varName) {
+  const markers = [`var ${varName} = `, `window["${varName}"] = `, `${varName} = `];
+  let start = -1;
+  for (const m of markers) {
+    const i = html.indexOf(m);
+    if (i !== -1) { start = i + m.length; break; }
+  }
+  if (start === -1) return null;
 
-async function check(s) {
+  let depth = 0, inStr = false, esc = false, end = -1;
+  for (let i = start; i < html.length; i++) {
+    const c = html[i];
+    if (inStr) {
+      if (esc) esc = false;
+      else if (c === '\\') esc = true;
+      else if (c === '"') inStr = false;
+      continue;
+    }
+    if (c === '"') { inStr = true; continue; }
+    if (c === '{') depth++;
+    else if (c === '}') {
+      depth--;
+      if (depth === 0) { end = i + 1; break; }
+    }
+  }
+  if (end === -1) return null;
+  try { return JSON.parse(html.slice(start, end)); } catch { return null; }
+}
+
+async function fetchLivePage(id, signal) {
+  const res = await fetch(`https://www.youtube.com/channel/${id}/live`, {
+    redirect: 'follow',
+    signal,
+    headers: {
+      'user-agent': UA,
+      'accept-language': 'id-ID,id;q=0.9,en;q=0.8',
+      cookie: 'CONSENT=YES+1; SOCS=CAI'
+    }
+  });
+  if (!res.ok) throw new Error('bad status ' + res.status);
+  return res.text();
+}
+
+async function checkOnce(s) {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
   try {
-    const res = await fetch(`https://www.youtube.com/channel/${s.id}/live`, {
-      redirect: 'follow',
-      signal: ctrl.signal,
-      headers: {
-        'user-agent': UA,
-        'accept-language': 'id-ID,id;q=0.9,en;q=0.8',
-        cookie: 'CONSENT=YES+1; SOCS=CAI'
-      }
-    });
-    if (!res.ok) return { ...s, ok: false, live: false };
-    const html = await res.text();
+    const html = await fetchLivePage(s.id, ctrl.signal);
 
-    const fromUrl = res.url.match(/[?&]v=([\w-]{11})/);
-    const fromCanonical = html.match(/<link rel="canonical" href="https:\/\/www\.youtube\.com\/watch\?v=([\w-]{11})"/);
-    const videoId = (fromUrl || fromCanonical || [])[1] || '';
-    // Jadwal/premiere yang belum mulai tidak punya "isLive":true
-    const live = Boolean(videoId) && /"isLive":true/.test(html);
-    if (!live) return { ...s, ok: true, live: false };
+    const playerResponse = extractJson(html, 'ytInitialPlayerResponse');
+    if (!playerResponse) return { ...s, ok: true, live: false };
 
-    const t = html.match(/<meta property="og:title" content="([^"]*)"/);
-    return { ...s, ok: true, live: true, videoId, title: t ? decode(t[1]) : '' };
+    const details = playerResponse.videoDetails || {};
+    const status = playerResponse.playabilityStatus || {};
+    const microformat = playerResponse.microformat && playerResponse.microformat.playerMicroformatRenderer;
+    const liveDetails = microformat ? microformat.liveBroadcastDetails : null;
+
+    const videoId = details.videoId || '';
+
+    // Sinyal paling akurat: isLiveNow. Kalau tidak tersedia, fallback ke
+    // kombinasi isLive + status "OK" (video benar-benar playable sekarang,
+    // bukan halaman jadwal/countdown).
+    const isLiveNow = liveDetails
+      ? Boolean(liveDetails.isLiveNow)
+      : Boolean(details.isLive) && status.status === 'OK';
+
+    if (!videoId || !isLiveNow) return { ...s, ok: true, live: false };
+
+    return { ...s, ok: true, live: true, videoId, title: details.title || '' };
   } catch (e) {
-    return { ...s, ok: false, live: false };
+    throw e;
   } finally {
     clearTimeout(timer);
   }
+}
+
+async function check(s) {
+  let lastErr = null;
+  for (let attempt = 0; attempt <= RETRIES; attempt++) {
+    try {
+      return await checkOnce(s);
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+  return { ...s, ok: false, live: false, error: lastErr ? String(lastErr.message || lastErr) : 'unknown' };
 }
 
 async function pool(items, size, fn) {
