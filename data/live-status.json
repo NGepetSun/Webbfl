@@ -1,1 +1,10 @@
-
+{
+  "version": 2,
+  "updated": null,
+  "total": 0,
+  "checked": 0,
+  "failed": 0,
+  "unknown": 0,
+  "live": [],
+  "channels": []
+}
