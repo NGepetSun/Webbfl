@@ -145,7 +145,14 @@ async function detectFromLivePage(s) {
   const redirectedVideoIds = extractVideoIds(result.url);
   if (redirectedVideoIds.length && /(?:youtube(?:-nocookie)?\.com\/watch\?v=|youtu\.be\/)/i.test(result.url)) {
     const watch = await fetchWatchState(redirectedVideoIds[0]);
-    if (watch.live) return { live: true, videoId: redirectedVideoIds[0], title: watch.title || extractTitle(html), method: 'watch-isLive' };
+    // Jangan pernah mengaitkan video ke streamer yang salah. Channel pemilik
+    // video dari player response wajib sama dengan channel yang sedang dicek.
+    if (watch.channelId && watch.channelId !== s.id) {
+      return { live: false, method: 'wrong-channel', actualChannelId: watch.channelId };
+    }
+    if (watch.live && watch.channelId === s.id) {
+      return { live: true, videoId: redirectedVideoIds[0], title: watch.title || extractTitle(html), method: 'watch-owner-verified' };
+    }
     return { live: false, method: watch.scheduled ? 'scheduled-broadcast' : 'watch-not-live' };
   }
 
@@ -154,7 +161,12 @@ async function detectFromLivePage(s) {
   const liveId = findExplicitLiveVideoId(html);
   if (liveId) {
     const watch = await fetchWatchState(liveId).catch(() => ({ live: false }));
-    if (watch.live) return { live: true, videoId: liveId, title: watch.title || extractTitle(html), method: 'player-isLive' };
+    if (watch.live && watch.channelId === s.id) {
+      return { live: true, videoId: liveId, title: watch.title || extractTitle(html), method: 'player-owner-verified' };
+    }
+    if (watch.channelId && watch.channelId !== s.id) {
+      return { live: false, method: 'wrong-channel', actualChannelId: watch.channelId };
+    }
   }
 
   // A plain word "LIVE" is intentionally NOT enough. It is common on
@@ -176,15 +188,58 @@ function findExplicitLiveVideoId(text) {
   return null;
 }
 
+function parsePlayerResponse(html) {
+  const source = String(html || '');
+  const markers = [
+    'ytInitialPlayerResponse =',
+    'ytInitialPlayerResponse=',
+    'window["ytInitialPlayerResponse"] ='
+  ];
+  for (const marker of markers) {
+    const at = source.indexOf(marker);
+    if (at < 0) continue;
+    const begin = source.indexOf('{', at + marker.length);
+    if (begin < 0) continue;
+    let depth = 0;
+    let inString = false;
+    let escaped = false;
+    for (let i = begin; i < source.length; i++) {
+      const ch = source[i];
+      if (inString) {
+        if (escaped) escaped = false;
+        else if (ch === '\\') escaped = true;
+        else if (ch === '"') inString = false;
+        continue;
+      }
+      if (ch === '"') inString = true;
+      else if (ch === '{') depth++;
+      else if (ch === '}') {
+        depth--;
+        if (depth === 0) {
+          try { return JSON.parse(source.slice(begin, i + 1)); }
+          catch (_) { break; }
+        }
+      }
+    }
+  }
+  return null;
+}
+
 async function fetchWatchState(videoId) {
   const result = await withTimeout(signal => fetchText(`https://www.youtube.com/watch?v=${videoId}`, signal));
   const html = result.text;
-  const live = /"isLive(?:Now)?"\s*:\s*true/i.test(html) &&
-    !/"isUpcoming"\s*:\s*true/i.test(html) &&
-    !/"isLiveContent"\s*:\s*false/i.test(html);
-  const scheduled = /"isUpcoming"\s*:\s*true/i.test(html) ||
-    /"upcomingEventData"/i.test(html);
-  return { live, scheduled, title: extractTitle(html) };
+  const player = parsePlayerResponse(html);
+  const details = player && player.videoDetails || {};
+  const micro = player && player.microformat && player.microformat.playerMicroformatRenderer || {};
+  const broadcast = micro.liveBroadcastDetails || {};
+  const channelId = details.channelId || '';
+  const title = details.title || extractTitle(html);
+  const scheduled = Boolean(broadcast.isUpcoming) || /"isUpcoming"\s*:\s*true/i.test(html) || /"upcomingEventData"/i.test(html);
+
+  // Hanya gunakan sinyal pada player response video yang sedang diperiksa,
+  // bukan kata LIVE yang mungkin muncul pada rekomendasi/video lain di HTML.
+  const live = details.isLiveContent === true && broadcast.isLiveNow === true && !scheduled;
+  return { live, scheduled, channelId, title };
 }
 
 async function checkOnce(s) {
