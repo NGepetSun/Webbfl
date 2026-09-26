@@ -3,7 +3,7 @@
  *
  * Tujuan:
  * - Tidak memakai YouTube Data API / API key / InnerTube key.
- * - Mengambil halaman publik channel /live dan oEmbed sebagai fallback.
+ * - Mengambil halaman publik channel /live dan hanya memvalidasi player broadcast yang benar-benar ON AIR.
  * - Beberapa detector dipakai karena format halaman YouTube dapat berubah.
  * - Error jaringan TIDAK dianggap sebagai OFFLINE.
  * - Response diberi CDN cache + stale-while-revalidate agar Vercel tidak
@@ -134,77 +134,66 @@ async function withTimeout(fn) {
   }
 }
 
-/* Detector 1: halaman publik /channel/{id}/live. */
+/* Detector: only count a broadcast when YouTube's player data explicitly says it is LIVE. */
 async function detectFromLivePage(s) {
   const url = `https://www.youtube.com/channel/${encodeURIComponent(s.id)}/live`;
   const result = await withTimeout(signal => fetchText(url, signal));
   const html = result.text;
+
+  // The /live page can resolve to a scheduled broadcast. Never trust the
+  // redirect alone: validate the resulting watch page's player state.
+  const redirectedVideoIds = extractVideoIds(result.url);
+  if (redirectedVideoIds.length && /(?:youtube(?:-nocookie)?\.com\/watch\?v=|youtu\.be\/)/i.test(result.url)) {
+    const watch = await fetchWatchState(redirectedVideoIds[0]);
+    if (watch.live) return { live: true, videoId: redirectedVideoIds[0], title: watch.title || extractTitle(html), method: 'watch-isLive' };
+    return { live: false, method: watch.scheduled ? 'scheduled-broadcast' : 'watch-not-live' };
+  }
+
+  // Strongest no-key signal: YouTube's internal player/broadcast state.
   const ids = extractVideoIds(html);
-
-  // Sinyal paling kuat: YouTube sendiri mengarahkan /live ke URL watch
-  // ketika ada siaran yang sedang aktif. Ini lebih aman daripada sekadar
-  // mencari kata "LIVE" di seluruh HTML channel.
-  const finalVideoIds = extractVideoIds(result.url);
-  if (finalVideoIds.length && /(?:youtube(?:-nocookie)?\.com\/watch\?v=|youtu\.be\/)/i.test(result.url)) {
-    return { live: true, videoId: finalVideoIds[0], title: extractTitle(html), method: 'live-redirect' };
+  const liveId = findExplicitLiveVideoId(html);
+  if (liveId) {
+    const watch = await fetchWatchState(liveId).catch(() => ({ live: false }));
+    if (watch.live) return { live: true, videoId: liveId, title: watch.title || extractTitle(html), method: 'player-isLive' };
   }
 
-  // Sinyal kedua: penanda live eksplisit yang muncul di data halaman.
-  if (hasLiveMarker(html) && ids.length) {
-    return { live: true, videoId: ids[0], title: extractTitle(html), method: 'live-page-marker' };
-  }
-
-  // Kadang halaman live mengandung player video aktif tetapi marker literal
-  // tidak ada. Hindari false-positive dengan memeriksa bagian player.
-  const playerIdx = Math.max(html.indexOf('ytInitialPlayerResponse'), html.indexOf('playerResponse'));
-  if (playerIdx >= 0) {
-    const windowText = html.slice(Math.max(0, playerIdx - 5000), playerIdx + 30000);
-    if ((/"isLive"\s*:\s*true/i.test(windowText) || /"isLiveNow"\s*:\s*true/i.test(windowText)) && ids.length) {
-      return { live: true, videoId: ids[0], title: extractTitle(html), method: 'player-response' };
-    }
-  }
-
-  return { live: false, method: 'live-page' };
+  // A plain word "LIVE" is intentionally NOT enough. It is common on
+  // scheduled cards, thumbnails, titles and channel metadata.
+  return { live: false, method: ids.length ? 'no-active-broadcast' : 'live-page' };
 }
 
-/* Detector 2: oEmbed. No API key. Ini berguna saat /live mengarahkan ke
-   video live aktif yang bisa dikenali oleh layanan embed YouTube. */
-async function detectFromOembed(s) {
-  const target = encodeURIComponent(`https://www.youtube.com/channel/${s.id}/live`);
-  const url = `https://www.youtube.com/oembed?url=${target}&format=json`;
-  const result = await withTimeout(signal => fetchText(url, signal, {
-    'accept': 'application/json,text/plain,*/*'
-  }));
+function findExplicitLiveVideoId(text) {
+  const s = String(text || '');
+  // Keep the ID near an explicit isLive/isLiveNow=true marker.
+  const patterns = [
+    /(?:"videoId"\s*:\s*"([A-Za-z0-9_-]{11})"[\s\S]{0,5000}?"isLive(?:Now)?"\s*:\s*true)/i,
+    /(?:"isLive(?:Now)?"\s*:\s*true[\s\S]{0,5000}?"videoId"\s*:\s*"([A-Za-z0-9_-]{11})")/i
+  ];
+  for (const re of patterns) {
+    const m = s.match(re);
+    if (m && validVideoId(m[1])) return m[1];
+  }
+  return null;
+}
 
-  let json;
-  try { json = JSON.parse(result.text); } catch { return { live: false, method: 'oembed-invalid' }; }
-
-  const videoId = extractVideoIds(json.html || '').find(validVideoId) || extractVideoIds(json.thumbnail_url || '').find(validVideoId);
-  const title = cleanTitle(json.title || '');
-
-  // oEmbed sendiri tidak menyediakan field isLive. Karena itu detector ini
-  // hanya dianggap live jika URL embed menghasilkan video ID dari target /live.
-  if (videoId) return { live: true, videoId, title, method: 'oembed' };
-  return { live: false, method: 'oembed' };
+async function fetchWatchState(videoId) {
+  const result = await withTimeout(signal => fetchText(`https://www.youtube.com/watch?v=${videoId}`, signal));
+  const html = result.text;
+  const live = /"isLive(?:Now)?"\s*:\s*true/i.test(html) &&
+    !/"isUpcoming"\s*:\s*true/i.test(html) &&
+    !/"isLiveContent"\s*:\s*false/i.test(html);
+  const scheduled = /"isUpcoming"\s*:\s*true/i.test(html) ||
+    /"upcomingEventData"/i.test(html);
+  return { live, scheduled, title: extractTitle(html) };
 }
 
 async function checkOnce(s) {
-  let pageError = null;
   try {
     const r = await detectFromLivePage(s);
     if (r.live) return { ...s, ok: true, live: true, videoId: r.videoId, title: r.title, method: r.method };
     return { ...s, ok: true, live: false, method: r.method };
   } catch (e) {
-    pageError = String(e && e.message || e);
-  }
-
-  try {
-    const r = await detectFromOembed(s);
-    if (r.live) return { ...s, ok: true, live: true, videoId: r.videoId, title: r.title, method: r.method };
-    // Kalau detector kedua berhasil menjawab OFFLINE, ini valid.
-    return { ...s, ok: true, live: false, method: r.method };
-  } catch (e) {
-    return { ...s, ok: false, live: false, error: `${pageError}; ${String(e && e.message || e)}` };
+    return { ...s, ok: false, live: false, error: String(e && e.message || e) };
   }
 }
 
@@ -239,7 +228,7 @@ function setHeaders(res) {
   // pengunjung tanpa mengulang 70 request ke YouTube.
   res.setHeader('Cache-Control', `public, s-maxage=${CACHE_SECONDS}, stale-while-revalidate=${STALE_SECONDS}`);
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
-  res.setHeader('X-Live-Monitor', 'no-api-key-v2');
+  res.setHeader('X-Live-Monitor', 'no-api-key-v3-live-only');
 }
 
 module.exports = async (req, res) => {
@@ -247,18 +236,16 @@ module.exports = async (req, res) => {
 
   const url = new URL(req.url, 'http://localhost');
   const debugId = url.searchParams.get('debug');
-  const debugOembedId = url.searchParams.get('debugOembed');
+  const debugOembedId = null;
 
   if (debugId || debugOembedId) {
-    const id = debugId || debugOembedId;
+    const id = debugId;
     const s = STREAMERS.find(x => x.id === id) || { name: id, id };
     const attempts = [];
 
     try {
       try { attempts.push({ type: 'live-page', result: await detectFromLivePage(s) }); }
       catch (e) { attempts.push({ type: 'live-page', error: String(e.message || e) }); }
-      try { attempts.push({ type: 'oembed', result: await detectFromOembed(s) }); }
-      catch (e) { attempts.push({ type: 'oembed', error: String(e.message || e) }); }
       res.status(200).send(JSON.stringify({ channel: s, attempts }, null, 2));
     } catch (e) {
       res.status(200).send(JSON.stringify({ channel: s, error: String(e.message || e), attempts }, null, 2));
@@ -282,6 +269,6 @@ module.exports = async (req, res) => {
     failed,
     live,
     durationMs: Date.now() - started,
-    source: 'public-youtube-no-api-key'
+    source: 'public-youtube-no-api-key-live-only'
   }));
 };
