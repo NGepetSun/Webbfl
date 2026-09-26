@@ -1,268 +1,130 @@
-/*
- * LIVE MONITOR - no API key
+/* BFL Live Monitor - no YouTube API key
  *
- * Tujuan:
- * - Tidak memakai YouTube Data API / API key / InnerTube key.
- * - Mengambil halaman publik channel /live dan hanya memvalidasi player broadcast yang benar-benar ON AIR.
- * - Beberapa detector dipakai karena format halaman YouTube dapat berubah.
- * - Error jaringan TIDAK dianggap sebagai OFFLINE.
- * - Response diberi CDN cache + stale-while-revalidate agar Vercel tidak
- *   melakukan puluhan request YouTube pada setiap refresh pengunjung.
+ * Primary detector: Invidious public API /channels/:id/streams
+ * Why: the previous YouTube InnerTube browse detector could miss active
+ * broadcasts because a channel browse response does not guarantee that the
+ * currently-live broadcast is present in the rendered video list.
+ *
+ * We only accept a result when:
+ *   - video.liveNow === true
+ *   - video.isUpcoming !== true
+ *   - video.authorId === requested channel id
+ * This prevents scheduled streams and streams from another channel from
+ * being shown as LIVE.
+ *
+ * Public instances are used only as metadata sources; the actual player still
+ * opens the normal YouTube watch URL in the frontend.
  */
 const STREAMERS = require('../streamers.json');
 
-const TIMEOUT_MS = 10000;
-const RETRIES = 1;
-const CONCURRENCY = 4;
-const CACHE_SECONDS = 45;
-const STALE_SECONDS = 180;
+const INSTANCES = [
+  'https://inv.nadeko.net',
+  'https://invidious.nerdvpn.de',
+  'https://yt.chocolatemoo53.com',
+  'https://invidious.tiekoetter.com',
+  'https://invidious.f5.si'
+];
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+const CONCURRENCY = 5;
+const TIMEOUT_MS = 7000;
+const RETRIES = 2;
+const CACHE_SECONDS = 30;
 
-function renderedText(t) {
-  if (!t) return '';
-  if (typeof t === 'string') return t;
-  if (t.simpleText) return t.simpleText;
-  if (Array.isArray(t.runs)) return t.runs.map(r => r && r.text || '').join('');
+function cleanText(v) {
+  if (typeof v === 'string') return v;
+  if (v && typeof v.simpleText === 'string') return v.simpleText;
+  if (v && Array.isArray(v.runs)) return v.runs.map(x => x.text || '').join('');
   return '';
 }
 
-function cleanTitle(s) {
-  return String(s || '')
-    .replace(/\s+/g, ' ')
-    .replace(/\s*[-|]\s*YouTube\s*$/i, '')
-    .trim();
+function isCurrentLive(v, channelId) {
+  if (!v || typeof v !== 'object') return false;
+  if (!v.videoId) return false;
+  if (String(v.authorId || '') !== String(channelId)) return false;
+  if (v.liveNow !== true) return false;
+  if (v.isUpcoming === true) return false;
+  return true;
 }
 
-function validVideoId(id) {
-  return typeof id === 'string' && /^[A-Za-z0-9_-]{11}$/.test(id);
+function thumbnail(v) {
+  const list = Array.isArray(v.videoThumbnails) ? v.videoThumbnails : [];
+  return list.length ? list[list.length - 1].url : null;
 }
 
-function extractVideoIds(text) {
-  const out = [];
-  const seen = new Set();
-  const add = id => {
-    if (validVideoId(id) && !seen.has(id)) {
-      seen.add(id);
-      out.push(id);
-    }
-  };
-
-  // URL video YouTube.
-  for (const m of String(text || '').matchAll(/(?:youtube(?:-nocookie)?\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/g)) {
-    add(m[1]);
-  }
-
-  // JSON fields umum di HTML YouTube.
-  for (const re of [
-    /"videoId"\s*:\s*"([A-Za-z0-9_-]{11})"/g,
-    /"videoId":"([A-Za-z0-9_-]{11})"/g
-  ]) {
-    for (const m of String(text || '').matchAll(re)) add(m[1]);
-  }
-
-  return out;
-}
-
-function extractTitle(text) {
-  const s = String(text || '');
-  const patterns = [
-    /<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i,
-    /<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:title["']/i,
-    /<title[^>]*>([\s\S]*?)<\/title>/i
-  ];
-  for (const re of patterns) {
-    const m = s.match(re);
-    if (m && m[1]) return cleanTitle(decodeHtml(m[1]));
-  }
-  return '';
-}
-
-function decodeHtml(s) {
-  return String(s || '')
-    .replace(/&amp;/g, '&')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>');
-}
-
-function looksLive(text) {
-  const s = String(text || '');
-  // Kita sengaja tidak menganggap semua kemunculan kata LIVE sebagai live.
-  // Detector ini hanya fallback; video ID + struktur live diprioritaskan.
-  return /\bLIVE NOW\b|\bWATCHING LIVE\b|\bIS LIVE\b|\bLIVE\b/i.test(s);
-}
-
-function hasLiveMarker(text) {
-  const s = String(text || '');
-  return [
-    /"isLiveNow"\s*:\s*true/i,
-    /"isLive"\s*:\s*true/i,
-    /"style"\s*:\s*"LIVE"/i,
-    /"label"\s*:\s*"LIVE"/i,
-    /"text"\s*:\s*"LIVE"/i,
-    /LIVE NOW/i
-  ].some(re => re.test(s));
-}
-
-async function fetchText(url, signal, extraHeaders = {}) {
+async function fetchJson(url, signal) {
   const r = await fetch(url, {
     signal,
-    redirect: 'follow',
     headers: {
-      'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131 Safari/537.36',
-      'accept-language': 'en-US,en;q=0.9,id;q=0.8',
-      'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-      ...extraHeaders
+      accept: 'application/json',
+      'user-agent': 'BFL-Live-Monitor/1.0'
     }
   });
-  const text = await r.text();
   if (!r.ok) throw new Error(`HTTP ${r.status}`);
-  return { status: r.status, url: r.url, text };
+  return await r.json();
 }
 
-async function withTimeout(fn) {
+async function fetchStreams(instance, channelId, signal) {
+  const url = `${instance}/api/v1/channels/${encodeURIComponent(channelId)}/streams?sort_by=newest`;
+  const data = await fetchJson(url, signal);
+  if (!data || typeof data !== 'object') throw new Error('invalid response');
+  const videos = Array.isArray(data.videos) ? data.videos : [];
+  return videos;
+}
+
+async function checkWithInstance(s, instance) {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
   try {
-    return await fn(ctrl.signal);
+    const videos = await fetchStreams(instance, s.id, ctrl.signal);
+    const live = videos.find(v => isCurrentLive(v, s.id));
+    if (!live) {
+      return { ...s, ok: true, live: false, source: instance };
+    }
+    return {
+      ...s,
+      ok: true,
+      live: true,
+      source: instance,
+      videoId: live.videoId,
+      title: cleanText(live.title) || '(tanpa judul)',
+      authorId: live.authorId,
+      thumbnail: thumbnail(live)
+    };
   } finally {
     clearTimeout(timer);
   }
 }
 
-/* Detector: only count a broadcast when YouTube's player data explicitly says it is LIVE. */
-async function detectFromLivePage(s) {
-  const url = `https://www.youtube.com/channel/${encodeURIComponent(s.id)}/live`;
-  const result = await withTimeout(signal => fetchText(url, signal));
-  const html = result.text;
-
-  // The /live page can resolve to a scheduled broadcast. Never trust the
-  // redirect alone: validate the resulting watch page's player state.
-  const redirectedVideoIds = extractVideoIds(result.url);
-  if (redirectedVideoIds.length && /(?:youtube(?:-nocookie)?\.com\/watch\?v=|youtu\.be\/)/i.test(result.url)) {
-    const watch = await fetchWatchState(redirectedVideoIds[0]);
-    // Jangan pernah mengaitkan video ke streamer yang salah. Channel pemilik
-    // video dari player response wajib sama dengan channel yang sedang dicek.
-    if (watch.channelId && watch.channelId !== s.id) {
-      return { live: false, method: 'wrong-channel', actualChannelId: watch.channelId };
-    }
-    if (watch.live && watch.channelId === s.id) {
-      return { live: true, videoId: redirectedVideoIds[0], title: watch.title || extractTitle(html), method: 'watch-owner-verified' };
-    }
-    return { live: false, method: watch.scheduled ? 'scheduled-broadcast' : 'watch-not-live' };
-  }
-
-  // Strongest no-key signal: YouTube's internal player/broadcast state.
-  const ids = extractVideoIds(html);
-  const liveId = findExplicitLiveVideoId(html);
-  if (liveId) {
-    const watch = await fetchWatchState(liveId).catch(() => ({ live: false }));
-    if (watch.live && watch.channelId === s.id) {
-      return { live: true, videoId: liveId, title: watch.title || extractTitle(html), method: 'player-owner-verified' };
-    }
-    if (watch.channelId && watch.channelId !== s.id) {
-      return { live: false, method: 'wrong-channel', actualChannelId: watch.channelId };
-    }
-  }
-
-  // A plain word "LIVE" is intentionally NOT enough. It is common on
-  // scheduled cards, thumbnails, titles and channel metadata.
-  return { live: false, method: ids.length ? 'no-active-broadcast' : 'live-page' };
-}
-
-function findExplicitLiveVideoId(text) {
-  const s = String(text || '');
-  // Keep the ID near an explicit isLive/isLiveNow=true marker.
-  const patterns = [
-    /(?:"videoId"\s*:\s*"([A-Za-z0-9_-]{11})"[\s\S]{0,5000}?"isLive(?:Now)?"\s*:\s*true)/i,
-    /(?:"isLive(?:Now)?"\s*:\s*true[\s\S]{0,5000}?"videoId"\s*:\s*"([A-Za-z0-9_-]{11})")/i
-  ];
-  for (const re of patterns) {
-    const m = s.match(re);
-    if (m && validVideoId(m[1])) return m[1];
-  }
-  return null;
-}
-
-function parsePlayerResponse(html) {
-  const source = String(html || '');
-  const markers = [
-    'ytInitialPlayerResponse =',
-    'ytInitialPlayerResponse=',
-    'window["ytInitialPlayerResponse"] ='
-  ];
-  for (const marker of markers) {
-    const at = source.indexOf(marker);
-    if (at < 0) continue;
-    const begin = source.indexOf('{', at + marker.length);
-    if (begin < 0) continue;
-    let depth = 0;
-    let inString = false;
-    let escaped = false;
-    for (let i = begin; i < source.length; i++) {
-      const ch = source[i];
-      if (inString) {
-        if (escaped) escaped = false;
-        else if (ch === '\\') escaped = true;
-        else if (ch === '"') inString = false;
-        continue;
-      }
-      if (ch === '"') inString = true;
-      else if (ch === '{') depth++;
-      else if (ch === '}') {
-        depth--;
-        if (depth === 0) {
-          try { return JSON.parse(source.slice(begin, i + 1)); }
-          catch (_) { break; }
-        }
-      }
-    }
-  }
-  return null;
-}
-
-async function fetchWatchState(videoId) {
-  const result = await withTimeout(signal => fetchText(`https://www.youtube.com/watch?v=${videoId}`, signal));
-  const html = result.text;
-  const player = parsePlayerResponse(html);
-  const details = player && player.videoDetails || {};
-  const micro = player && player.microformat && player.microformat.playerMicroformatRenderer || {};
-  const broadcast = micro.liveBroadcastDetails || {};
-  const channelId = details.channelId || '';
-  const title = details.title || extractTitle(html);
-  const scheduled = Boolean(broadcast.isUpcoming) || /"isUpcoming"\s*:\s*true/i.test(html) || /"upcomingEventData"/i.test(html);
-
-  // Hanya gunakan sinyal pada player response video yang sedang diperiksa,
-  // bukan kata LIVE yang mungkin muncul pada rekomendasi/video lain di HTML.
-  const live = details.isLiveContent === true && broadcast.isLiveNow === true && !scheduled;
-  return { live, scheduled, channelId, title };
-}
-
-async function checkOnce(s) {
-  try {
-    const r = await detectFromLivePage(s);
-    if (r.live) return { ...s, ok: true, live: true, videoId: r.videoId, title: r.title, method: r.method };
-    return { ...s, ok: true, live: false, method: r.method };
-  } catch (e) {
-    return { ...s, ok: false, live: false, error: String(e && e.message || e) };
-  }
-}
-
 async function check(s) {
-  let lastErr = null;
-  for (let attempt = 0; attempt <= RETRIES; attempt++) {
+  let lastError = 'unknown';
+  const start = (Math.abs(hash(s.id)) % INSTANCES.length);
+
+  // Try different public instances on retries. This spreads load and also
+  // prevents one unhealthy instance from making many channels disappear.
+  for (let attempt = 0; attempt < Math.min(RETRIES + 1, INSTANCES.length); attempt++) {
+    const instance = INSTANCES[(start + attempt) % INSTANCES.length];
     try {
-      return await checkOnce(s);
+      return await checkWithInstance(s, instance);
     } catch (e) {
-      lastErr = e;
-      if (attempt < RETRIES) await sleep(350 * (attempt + 1));
+      lastError = String(e && e.message || e);
     }
   }
-  return { ...s, ok: false, live: false, error: String(lastErr && lastErr.message || lastErr || 'unknown') };
+
+  return {
+    ...s,
+    ok: false,
+    live: false,
+    error: lastError
+  };
+}
+
+function hash(str) {
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
 }
 
 async function pool(items, size, fn) {
@@ -278,52 +140,46 @@ async function pool(items, size, fn) {
   return out;
 }
 
-function setHeaders(res) {
-  // s-maxage memungkinkan CDN Vercel menyajikan hasil yang sama ke banyak
-  // pengunjung tanpa mengulang 70 request ke YouTube.
-  res.setHeader('Cache-Control', `public, s-maxage=${CACHE_SECONDS}, stale-while-revalidate=${STALE_SECONDS}`);
+function send(res, body, status = 200) {
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
-  res.setHeader('X-Live-Monitor', 'no-api-key-v3-live-only');
+  res.setHeader('Cache-Control', `public, s-maxage=${CACHE_SECONDS}, stale-while-revalidate=90`);
+  res.status(status).send(JSON.stringify(body));
 }
 
 module.exports = async (req, res) => {
-  setHeaders(res);
-
   const url = new URL(req.url, 'http://localhost');
   const debugId = url.searchParams.get('debug');
-  const debugOembedId = null;
 
-  if (debugId || debugOembedId) {
-    const id = debugId;
-    const s = STREAMERS.find(x => x.id === id) || { name: id, id };
+  // Debug a single configured channel. Useful for verifying a streamer that
+  // is known to be live without scanning all 73 channels.
+  if (debugId) {
+    const s = STREAMERS.find(x => x.id === debugId);
+    if (!s) return send(res, { ok: false, error: 'Channel ID tidak ada di streamers.json', requestedId: debugId }, 404);
+
     const attempts = [];
-
-    try {
-      try { attempts.push({ type: 'live-page', result: await detectFromLivePage(s) }); }
-      catch (e) { attempts.push({ type: 'live-page', error: String(e.message || e) }); }
-      res.status(200).send(JSON.stringify({ channel: s, attempts }, null, 2));
-    } catch (e) {
-      res.status(200).send(JSON.stringify({ channel: s, error: String(e.message || e), attempts }, null, 2));
+    for (const instance of INSTANCES) {
+      try {
+        const result = await checkWithInstance(s, instance);
+        attempts.push({ instance, ok: true, live: result.live, videoId: result.videoId || null, title: result.title || null });
+        if (result.live) return send(res, { requestedId: debugId, streamer: s.name, result, attempts });
+      } catch (e) {
+        attempts.push({ instance, ok: false, error: String(e && e.message || e) });
+      }
     }
-    return;
+    return send(res, { requestedId: debugId, streamer: s.name, live: false, attempts });
   }
 
-  const started = Date.now();
   const results = await pool(STREAMERS, CONCURRENCY, check);
   const live = results
-    .filter(r => r && r.ok && r.live && validVideoId(r.videoId))
-    .map(({ name, id, videoId, title, method }) => ({ name, id, videoId, title: title || '', method }));
+    .filter(r => r && r.live === true && r.videoId && String(r.authorId) === String(r.id))
+    .map(({ name, id, videoId, title, thumbnail, source }) => ({ name, id, videoId, title, thumbnail, source }));
 
   const failed = results.filter(r => !r || !r.ok).length;
-  const checked = results.length - failed;
 
-  res.status(200).send(JSON.stringify({
+  return send(res, {
     updated: new Date().toISOString(),
     total: STREAMERS.length,
-    checked,
     failed,
-    live,
-    durationMs: Date.now() - started,
-    source: 'public-youtube-no-api-key-live-only'
-  }));
+    live
+  });
 };
