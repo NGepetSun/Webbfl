@@ -217,19 +217,31 @@
       }
     }
 
+    let loading = false;
     async function load() {
-      updatedEl.textContent = "Memeriksa channel...";
+      if (loading) return;
+      loading = true;
+      if (!data) updatedEl.textContent = "Memeriksa channel...";
+      else updatedEl.textContent = "Memperbarui status live...";
       try {
         const res = await fetch("/api/live", { cache: "no-store" });
-        if (!res.ok) throw new Error("bad status");
-        data = await res.json();
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const next = await res.json();
+        if (!next || !Array.isArray(next.live)) throw new Error("payload live tidak valid");
+        data = next;
         render();
-      } catch {
-        if (data) { updatedEl.textContent = "Gagal memperbarui. Menampilkan data terakhir."; return; }
-        listEl.innerHTML = `<div class="none">Tidak bisa memeriksa status live saat ini.</div>`;
-        showOffline("Tidak bisa memeriksa status live saat ini.");
-        updatedEl.textContent = "Gagal memeriksa status live.";
-        offCountEl.textContent = "0"; offListEl.innerHTML = "";
+      } catch (e) {
+        if (data) {
+          updatedEl.textContent = "Koneksi YouTube bermasalah · menampilkan data terakhir yang valid";
+        } else {
+          listEl.innerHTML = `<div class="none">Status live belum bisa diperiksa. Coba lagi beberapa saat.</div>`;
+          showOffline("Monitor sedang menghubungkan ke YouTube.");
+          updatedEl.textContent = "Belum ada data live yang berhasil diambil.";
+          offCountEl.textContent = "0";
+          offListEl.innerHTML = "";
+        }
+      } finally {
+        loading = false;
       }
     }
 
