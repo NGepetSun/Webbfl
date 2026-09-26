@@ -136,8 +136,7 @@ module.exports = async (req, res) => {
   const debugInnertube = url.searchParams.get('debugInnertube');
 
   if (debugInnertube) {
-    // Mode diagnostik #2: coba lewat API internal (InnerTube) YouTube dengan
-    // menyamar sebagai aplikasi Android, alih-alih scraping halaman web biasa.
+    // Mode diagnostik #2: coba lewat API internal (InnerTube) YouTube.
     // Endpoint "browse" tab Home channel biasanya menonjolkan siaran yang
     // sedang berlangsung lewat channelFeaturedContentRenderer / badge LIVE.
     const INNERTUBE_KEY = 'AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8';
@@ -149,12 +148,18 @@ module.exports = async (req, res) => {
         signal: ctrl.signal,
         headers: {
           'content-type': 'application/json',
-          'user-agent': 'com.google.android.youtube/19.09.37 (Linux; U; Android 13) gzip',
-          'x-youtube-client-name': '3',
-          'x-youtube-client-version': '19.09.37'
+          origin: 'https://www.youtube.com',
+          referer: 'https://www.youtube.com'
         },
         body: JSON.stringify({
-          context: { client: { clientName: 'ANDROID', clientVersion: '19.09.37', androidSdkVersion: 33, hl: 'en', gl: 'US' } },
+          context: {
+            client: {
+              hl: 'en',
+              gl: 'US',
+              clientName: 'WEB',
+              clientVersion: '2.20210330.08.00'
+            }
+          },
           browseId: debugInnertube
         })
       });
@@ -173,7 +178,7 @@ module.exports = async (req, res) => {
         hasErrorField: json ? Boolean(json.error) : null,
         errorMessage: json && json.error ? json.error.message : null,
         hasLiveBadgeGuess: hasLiveBadge,
-        snippet: text.slice(0, 500)
+        snippet: text.slice(0, 800)
       }, null, 2));
     } catch (e) {
       res.status(200).send(JSON.stringify({ requestedId: debugInnertube, error: String(e.message || e) }, null, 2));
