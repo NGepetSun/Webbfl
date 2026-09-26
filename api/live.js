@@ -1,19 +1,18 @@
 /* BFL Live Monitor - no YouTube API key
  *
- * Primary detector: Invidious public API /channels/:id/streams
- * Why: the previous YouTube InnerTube browse detector could miss active
- * broadcasts because a channel browse response does not guarantee that the
- * currently-live broadcast is present in the rendered video list.
+ * Detection strategy:
+ *  - Query every currently listed, trusted Invidious public instance for each
+ *    configured channel.
+ *  - A channel is LIVE when ANY healthy source reports liveNow=true AND the
+ *    returned authorId exactly matches the configured channel ID.
+ *  - Scheduled streams are rejected with isUpcoming=true.
+ *  - A source saying "not live" does not cancel another source saying LIVE;
+ *    this is important because public instances can have stale channel data.
+ *  - Per-instance failures are counted separately from channel results.
  *
- * We only accept a result when:
- *   - video.liveNow === true
- *   - video.isUpcoming !== true
- *   - video.authorId === requested channel id
- * This prevents scheduled streams and streams from another channel from
- * being shown as LIVE.
- *
- * Public instances are used only as metadata sources; the actual player still
- * opens the normal YouTube watch URL in the frontend.
+ * This deliberately uses no YouTube API key. Invidious documents the streams
+ * endpoint and liveNow/isUpcoming fields, and its official instance list is
+ * used below.
  */
 const STREAMERS = require('../streamers.json');
 
@@ -25,10 +24,10 @@ const INSTANCES = [
   'https://invidious.f5.si'
 ];
 
-const CONCURRENCY = 5;
-const TIMEOUT_MS = 7000;
-const RETRIES = 2;
-const CACHE_SECONDS = 30;
+const CHANNEL_CONCURRENCY = 12;
+const SOURCE_CONCURRENCY = 5;
+const TIMEOUT_MS = 3500;
+const CACHE_SECONDS = 20;
 
 function cleanText(v) {
   if (typeof v === 'string') return v;
@@ -37,18 +36,18 @@ function cleanText(v) {
   return '';
 }
 
-function isCurrentLive(v, channelId) {
-  if (!v || typeof v !== 'object') return false;
-  if (!v.videoId) return false;
-  if (String(v.authorId || '') !== String(channelId)) return false;
-  if (v.liveNow !== true) return false;
-  if (v.isUpcoming === true) return false;
-  return true;
+function thumb(v) {
+  const a = Array.isArray(v && v.videoThumbnails) ? v.videoThumbnails : [];
+  return a.length ? a[a.length - 1].url : null;
 }
 
-function thumbnail(v) {
-  const list = Array.isArray(v.videoThumbnails) ? v.videoThumbnails : [];
-  return list.length ? list[list.length - 1].url : null;
+function isLive(v, channelId) {
+  return !!(
+    v && v.videoId &&
+    String(v.authorId || '') === String(channelId) &&
+    v.liveNow === true &&
+    v.isUpcoming !== true
+  );
 }
 
 async function fetchJson(url, signal) {
@@ -56,75 +55,84 @@ async function fetchJson(url, signal) {
     signal,
     headers: {
       accept: 'application/json',
-      'user-agent': 'BFL-Live-Monitor/1.0'
+      'user-agent': 'BFL-Live-Monitor/2.0'
     }
   });
   if (!r.ok) throw new Error(`HTTP ${r.status}`);
-  return await r.json();
+  return r.json();
 }
 
-async function fetchStreams(instance, channelId, signal) {
-  const url = `${instance}/api/v1/channels/${encodeURIComponent(channelId)}/streams?sort_by=newest`;
-  const data = await fetchJson(url, signal);
-  if (!data || typeof data !== 'object') throw new Error('invalid response');
-  const videos = Array.isArray(data.videos) ? data.videos : [];
-  return videos;
-}
-
-async function checkWithInstance(s, instance) {
+async function checkSource(s, instance) {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
   try {
-    const videos = await fetchStreams(instance, s.id, ctrl.signal);
-    const live = videos.find(v => isCurrentLive(v, s.id));
-    if (!live) {
-      return { ...s, ok: true, live: false, source: instance };
-    }
+    const url = `${instance}/api/v1/channels/${encodeURIComponent(s.id)}/streams?sort_by=newest`;
+    const data = await fetchJson(url, ctrl.signal);
+    const videos = data && Array.isArray(data.videos) ? data.videos : [];
+    const live = videos.find(v => isLive(v, s.id));
     return {
-      ...s,
+      instance,
       ok: true,
-      live: true,
-      source: instance,
-      videoId: live.videoId,
-      title: cleanText(live.title) || '(tanpa judul)',
-      authorId: live.authorId,
-      thumbnail: thumbnail(live)
+      live: !!live,
+      video: live ? {
+        videoId: live.videoId,
+        title: cleanText(live.title) || '(tanpa judul)',
+        thumbnail: thumb(live),
+        authorId: live.authorId
+      } : null
     };
   } finally {
     clearTimeout(timer);
   }
 }
 
-async function check(s) {
-  let lastError = 'unknown';
-  const start = (Math.abs(hash(s.id)) % INSTANCES.length);
-
-  // Try different public instances on retries. This spreads load and also
-  // prevents one unhealthy instance from making many channels disappear.
-  for (let attempt = 0; attempt < Math.min(RETRIES + 1, INSTANCES.length); attempt++) {
-    const instance = INSTANCES[(start + attempt) % INSTANCES.length];
-    try {
-      return await checkWithInstance(s, instance);
-    } catch (e) {
-      lastError = String(e && e.message || e);
+async function sourcePool(s, size, onResult) {
+  const out = new Array(INSTANCES.length);
+  let next = 0;
+  await Promise.all(Array.from({ length: Math.min(size, INSTANCES.length) }, async () => {
+    while (true) {
+      const i = next++;
+      if (i >= INSTANCES.length) return;
+      try {
+        const r = await checkSource(s, INSTANCES[i]);
+        out[i] = r;
+        if (r.live && r.video) onResult(r);
+      } catch (e) {
+        out[i] = { instance: INSTANCES[i], ok: false, live: false, error: String(e && e.message || e) };
+      }
     }
-  }
-
-  return {
-    ...s,
-    ok: false,
-    live: false,
-    error: lastError
-  };
+  }));
+  return out;
 }
 
-function hash(str) {
-  let h = 2166136261;
-  for (let i = 0; i < str.length; i++) {
-    h ^= str.charCodeAt(i);
-    h = Math.imul(h, 16777619);
+async function checkChannel(s) {
+  const attempts = await sourcePool(s, SOURCE_CONCURRENCY, () => {});
+  const liveAttempt = attempts.find(x => x && x.ok && x.live && x.video);
+  const okCount = attempts.filter(x => x && x.ok).length;
+  const failedCount = attempts.filter(x => !x || !x.ok).length;
+
+  if (liveAttempt) {
+    return {
+      ...s,
+      ok: true,
+      live: true,
+      videoId: liveAttempt.video.videoId,
+      title: liveAttempt.video.title,
+      thumbnail: liveAttempt.video.thumbnail,
+      authorId: liveAttempt.video.authorId,
+      sourcesChecked: attempts.length,
+      sourcesOk: okCount,
+      sourcesFailed: failedCount
+    };
   }
-  return h >>> 0;
+
+  // A channel is considered confirmed offline if at least one source answered
+  // successfully. It is considered unknown/failed only when every source failed.
+  if (okCount > 0) {
+    return { ...s, ok: true, live: false, sourcesChecked: attempts.length, sourcesOk: okCount, sourcesFailed: failedCount };
+  }
+
+  return { ...s, ok: false, live: false, error: 'Semua sumber gagal', sourcesChecked: attempts.length, sourcesOk: 0, sourcesFailed: failedCount };
 }
 
 async function pool(items, size, fn) {
@@ -140,9 +148,9 @@ async function pool(items, size, fn) {
   return out;
 }
 
-function send(res, body, status = 200) {
+function send(res, body, status = 200, cache = CACHE_SECONDS) {
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
-  res.setHeader('Cache-Control', `public, s-maxage=${CACHE_SECONDS}, stale-while-revalidate=90`);
+  res.setHeader('Cache-Control', `public, s-maxage=${cache}, stale-while-revalidate=90`);
   res.status(status).send(JSON.stringify(body));
 }
 
@@ -150,36 +158,35 @@ module.exports = async (req, res) => {
   const url = new URL(req.url, 'http://localhost');
   const debugId = url.searchParams.get('debug');
 
-  // Debug a single configured channel. Useful for verifying a streamer that
-  // is known to be live without scanning all 73 channels.
   if (debugId) {
-    const s = STREAMERS.find(x => x.id === debugId);
-    if (!s) return send(res, { ok: false, error: 'Channel ID tidak ada di streamers.json', requestedId: debugId }, 404);
-
-    const attempts = [];
-    for (const instance of INSTANCES) {
-      try {
-        const result = await checkWithInstance(s, instance);
-        attempts.push({ instance, ok: true, live: result.live, videoId: result.videoId || null, title: result.title || null });
-        if (result.live) return send(res, { requestedId: debugId, streamer: s.name, result, attempts });
-      } catch (e) {
-        attempts.push({ instance, ok: false, error: String(e && e.message || e) });
-      }
-    }
-    return send(res, { requestedId: debugId, streamer: s.name, live: false, attempts });
+    const s = STREAMERS.find(x => String(x.id) === String(debugId));
+    if (!s) return send(res, { ok: false, error: 'Channel ID tidak ada di streamers.json', requestedId: debugId }, 404, 0);
+    const attempts = await sourcePool(s, SOURCE_CONCURRENCY, () => {});
+    const live = attempts.find(x => x && x.ok && x.live && x.video);
+    return send(res, {
+      ok: true,
+      requestedId: s.id,
+      streamer: s.name,
+      live: !!live,
+      result: live ? { ...s, videoId: live.video.videoId, title: live.video.title, thumbnail: live.video.thumbnail, authorId: live.video.authorId } : null,
+      attempts
+    }, 200, 0);
   }
 
-  const results = await pool(STREAMERS, CONCURRENCY, check);
-  const live = results
-    .filter(r => r && r.live === true && r.videoId && String(r.authorId) === String(r.id))
-    .map(({ name, id, videoId, title, thumbnail, source }) => ({ name, id, videoId, title, thumbnail, source }));
+  const results = await pool(STREAMERS, CHANNEL_CONCURRENCY, checkChannel);
+  const live = results.filter(r => r && r.live && r.videoId && String(r.authorId) === String(r.id))
+    .map(({ name, id, videoId, title, thumbnail }) => ({ name, id, videoId, title, thumbnail }));
 
   const failed = results.filter(r => !r || !r.ok).length;
+  const checked = results.length;
+  const sourceFailures = results.reduce((n, r) => n + (r && r.sourcesFailed || 0), 0);
 
   return send(res, {
     updated: new Date().toISOString(),
     total: STREAMERS.length,
+    checked,
     failed,
+    sourceFailures,
     live
   });
 };
