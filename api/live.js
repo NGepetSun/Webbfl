@@ -95,6 +95,36 @@ function findLiveVideos(root) {
   return found;
 }
 
+/* Sama seperti findLiveVideos, tapi mengembalikan SEMUA videoRenderer yang
+   ketemu (live atau bukan) plus badge/overlay mentahnya - dipakai mode
+   debug untuk lihat format asli dari YouTube. */
+function findAllVideosRaw(root, limit) {
+  const found = [];
+  const seen = new Set();
+
+  function walk(node) {
+    if (!node || typeof node !== 'object' || found.length >= limit) return;
+    if (Array.isArray(node)) { for (const item of node) walk(item); return; }
+
+    const vr = node.videoRenderer || node.gridVideoRenderer;
+    if (vr && vr.videoId && !seen.has(vr.videoId)) {
+      seen.add(vr.videoId);
+      found.push({
+        videoId: vr.videoId,
+        title: renderedText(vr.title),
+        badges: vr.badges || null,
+        thumbnailOverlays: vr.thumbnailOverlays || null,
+        viewCountText: vr.viewCountText || null,
+        shortViewCountText: vr.shortViewCountText || null
+      });
+    }
+    for (const key of Object.keys(node)) walk(node[key]);
+  }
+
+  walk(root);
+  return found;
+}
+
 async function checkOnce(s) {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
@@ -135,6 +165,36 @@ async function pool(items, size, fn) {
 module.exports = async (req, res) => {
   const url = new URL(req.url, 'http://x');
   const debugId = url.searchParams.get('debug') || url.searchParams.get('debugInnertube');
+  const debugOembedId = url.searchParams.get('debugOembed');
+
+  if (debugOembedId) {
+    // Mode diagnostik #3: coba endpoint oEmbed resmi YouTube (dipakai buat
+    // fitur "Sematkan" di situs lain). Kalau channel sedang live, oEmbed
+    // untuk URL /channel/ID/live akan mengembalikan info video LIVE-nya;
+    // kalau tidak live, biasanya mengembalikan error 401/404.
+    try {
+      const target = encodeURIComponent(`https://www.youtube.com/channel/${debugOembedId}/live`);
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
+      const r = await fetch(`https://www.youtube.com/oembed?url=${target}&format=json`, { signal: ctrl.signal });
+      clearTimeout(timer);
+      const text = await r.text();
+      let json = null;
+      try { json = JSON.parse(text); } catch {}
+      res.setHeader('Content-Type', 'application/json; charset=utf-8');
+      res.status(200).send(JSON.stringify({
+        requestedId: debugOembedId,
+        httpStatus: r.status,
+        parsedOk: Boolean(json),
+        title: json ? json.title : null,
+        authorName: json ? json.author_name : null,
+        rawSnippet: text.slice(0, 400)
+      }, null, 2));
+    } catch (e) {
+      res.status(200).send(JSON.stringify({ requestedId: debugOembedId, error: String(e.message || e) }, null, 2));
+    }
+    return;
+  }
 
   if (debugId) {
     // Mode diagnostik: cek SATU channel dan tampilkan detail mentahnya,
@@ -150,12 +210,14 @@ module.exports = async (req, res) => {
       }
       clearTimeout(timer);
       const liveVideos = data ? findLiveVideos(data) : [];
+      const allVideos = data ? findAllVideosRaw(data, 8) : [];
       res.setHeader('Content-Type', 'application/json; charset=utf-8');
       res.status(200).send(JSON.stringify({
         requestedId: debugId,
         fetchError: errMsg,
         topLevelKeys: data ? Object.keys(data) : [],
-        liveVideosFound: liveVideos
+        liveVideosFound: liveVideos,
+        sampleVideosRaw: allVideos
       }, null, 2));
     } catch (e) {
       res.status(200).send(JSON.stringify({ requestedId: debugId, error: String(e.message || e) }, null, 2));
