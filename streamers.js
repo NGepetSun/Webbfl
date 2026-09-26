@@ -289,7 +289,7 @@ const STREAMERS = [
   "id": "UCrYph2FaG-TOxrnmLX9pw2A"
  },
  {
-  "name": "cyzarine",
-  "id": "UCapfNKYIuTGYmHowvU3k1xg"
+  "name": "tvOne",
+  "id": "UCER4rvDnRBPr_ncYW4UCZjg"
  }
 ];
