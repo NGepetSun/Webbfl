@@ -203,15 +203,48 @@
   </main>
 
   <!-- HISTORY -->
-  <main class="page member-page" id="history" data-page-id="history" hidden>
-    <section class="page-head">
-      <div>
-        <div class="kicker">PERJALANAN</div>
-        <h1>HIS<b>TORY</b></h1>
-        <p class="sub">// jejak langkah MFL dari awal</p>
+  <main class="page history-page" id="history" data-page-id="history" hidden>
+    <section class="history-hero">
+      <div class="history-hero-copy">
+        <div class="history-kicker"><span></span> OUR HISTORY <span></span></div>
+        <h1>PERJALANAN <b>FRAKSI</b></h1>
+        <p>Setiap langkah, setiap keputusan, dan setiap momen adalah bagian dari perjalanan panjang kami. Dari awal terbentuk hingga menjadi seperti sekarang, ini adalah kisah perjalanan BFL — sebuah fraksi yang lahir dari persaudaraan, kepercayaan, dan tekad untuk terus melangkah bersama.</p>
+      </div>
+      <div class="history-hero-art" aria-hidden="true">
+        <div class="history-city"></div>
+        <div class="history-silhouette s1">BFL</div>
+        <div class="history-silhouette s2">BFL</div>
+        <div class="history-silhouette s3">BFL</div>
+        <div class="history-hero-mark">BFL<small>BROTHERHOOD</small></div>
       </div>
     </section>
-    <ol class="timeline" id="timeline"></ol>
+
+    <div class="history-layout">
+      <section class="history-main">
+        <div class="history-section-title">
+          <div><span class="history-icon">◈</span><div><h2>LINI MASA PERJALANAN</h2><p>Momen penting yang membentuk perjalanan fraksi kami.</p></div></div>
+        </div>
+        <ol class="timeline" id="timeline"></ol>
+      </section>
+
+      <aside class="history-side">
+        <section class="history-panel history-stats">
+          <div class="history-panel-head"><h2>STATISTIK FRAKSI</h2><span>▥</span></div>
+          <div class="history-stat-grid">
+            <div><span class="hs-icon">▣</span><small>Tahun Berdiri</small><strong id="historyFounded">—</strong></div>
+            <div><span class="hs-icon">♟</span><small>Total Anggota</small><strong id="historyMembers">—</strong></div>
+            <div><span class="hs-icon">◆</span><small>Event Terselenggara</small><strong id="historyEvents">—</strong></div>
+            <div><span class="hs-icon">⌖</span><small>Lokasi Operasi</small><strong id="historyLocation">Los Santos</strong></div>
+          </div>
+        </section>
+
+        <section class="history-panel history-docs">
+          <div class="history-panel-head"><h2>DOCUMENTASI SEJARAH</h2><button id="historyViewAll" type="button">Lihat Semua →</button></div>
+          <div class="history-doc-feature" id="historyDocFeature"></div>
+          <div class="history-doc-grid" id="historyDocGrid"></div>
+        </section>
+      </aside>
+    </div>
   </main>
 
   <div class="toast" role="status" aria-live="polite"></div>

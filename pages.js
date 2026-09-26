@@ -217,31 +217,19 @@
       }
     }
 
-    let loading = false;
     async function load() {
-      if (loading) return;
-      loading = true;
-      if (!data) updatedEl.textContent = "Memeriksa channel...";
-      else updatedEl.textContent = "Memperbarui status live...";
+      updatedEl.textContent = "Memeriksa channel...";
       try {
         const res = await fetch("/api/live", { cache: "no-store" });
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        const next = await res.json();
-        if (!next || !Array.isArray(next.live)) throw new Error("payload live tidak valid");
-        data = next;
+        if (!res.ok) throw new Error("bad status");
+        data = await res.json();
         render();
-      } catch (e) {
-        if (data) {
-          updatedEl.textContent = "Koneksi YouTube bermasalah · menampilkan data terakhir yang valid";
-        } else {
-          listEl.innerHTML = `<div class="none">Status live belum bisa diperiksa. Coba lagi beberapa saat.</div>`;
-          showOffline("Monitor sedang menghubungkan ke YouTube.");
-          updatedEl.textContent = "Belum ada data live yang berhasil diambil.";
-          offCountEl.textContent = "0";
-          offListEl.innerHTML = "";
-        }
-      } finally {
-        loading = false;
+      } catch {
+        if (data) { updatedEl.textContent = "Gagal memperbarui. Menampilkan data terakhir."; return; }
+        listEl.innerHTML = `<div class="none">Tidak bisa memeriksa status live saat ini.</div>`;
+        showOffline("Tidak bisa memeriksa status live saat ini.");
+        updatedEl.textContent = "Gagal memeriksa status live.";
+        offCountEl.textContent = "0"; offListEl.innerHTML = "";
       }
     }
 
@@ -287,6 +275,58 @@
   renderGallery();
 
   /* ---------- HISTORY ---------- */
-  $("timeline").innerHTML = SITE.history.map(h => `
-    <li><span class="node"></span><div class="card"><small>${esc(h.year)}</small><h3>${esc(h.title)}</h3><p>${esc(h.text)}</p></div></li>`).join("");
+  (() => {
+    const history = Array.isArray(SITE.history) ? SITE.history : [];
+    const gallery = Array.isArray(SITE.gallery) ? SITE.gallery.filter(x => x && x.src) : [];
+    const timeline = $("timeline");
+    if (!timeline) return;
+
+    const fallbackPhoto = "assets/logo.webp";
+    const photoFor = (h, i) => {
+      const explicit = h.image || h.src || h.photo;
+      if (explicit) return explicit;
+      return gallery[i % gallery.length]?.src || fallbackPhoto;
+    };
+    const tagFor = (h, i) => h.tag || ["Awal Perjalanan", "Ekspansi & Rekrutmen", "Momen Penting", "Tantangan & Ujian", "Menuju Masa Depan"][i % 5];
+
+    timeline.innerHTML = history.length ? history.map((h, i) => `
+      <li class="history-item">
+        <div class="history-date"><strong>${esc(h.year || "—")}</strong><span>${esc(tagFor(h, i))}</span></div>
+        <span class="node"></span>
+        <article class="history-card">
+          <div class="history-photo"><img src="${esc(photoFor(h, i))}" alt="${esc(h.title || "Dokumentasi sejarah")}" loading="lazy" decoding="async"><span class="photo-shade"></span></div>
+          <div class="history-card-body">
+            <h3>${esc(h.title || "Momen perjalanan")}</h3>
+            <p>${esc(h.text || "Tambahkan cerita perjalanan fraksi di content.js.")}</p>
+            <span class="history-tag">#${esc((h.tag || "BFLForever").replace(/[^a-zA-Z0-9]+/g, ""))}</span>
+          </div>
+        </article>
+      </li>`).join("") : `<li class="history-empty">Belum ada perjalanan yang ditambahkan.</li>`;
+
+    const founded = $("historyFounded");
+    const members = $("historyMembers");
+    const events = $("historyEvents");
+    const location = $("historyLocation");
+    if (founded) founded.textContent = history[0]?.year || "—";
+    if (members) members.textContent = (typeof STREAMERS !== "undefined" && Array.isArray(STREAMERS) ? STREAMERS.length + "+" : "—");
+    if (events) events.textContent = history.length + "+";
+    if (location) location.textContent = "Los Santos";
+
+    const allDocs = gallery.length ? gallery : history.map((h, i) => ({src: photoFor(h, i), title: h.title || "Dokumentasi", cat: tagFor(h, i)}));
+    const feature = $("historyDocFeature");
+    const docGrid = $("historyDocGrid");
+    const makeDoc = (it, i, featured = false) => `
+      <figure class="history-doc ${featured ? "featured" : ""}">
+        <img src="${esc(it.src || fallbackPhoto)}" alt="${esc(it.title || "Dokumentasi sejarah")}" loading="lazy">
+        <figcaption><span>#${esc((it.cat || "BFLHistory").replace(/[^a-zA-Z0-9]+/g, ""))}</span><b>${esc(it.title || "Dokumentasi sejarah")}</b><small>${esc(history[i]?.year || "Sejarah")}</small></figcaption>
+      </figure>`;
+    if (feature) feature.innerHTML = allDocs.length ? makeDoc(allDocs[0], 0, true) : `<div class="history-no-photo">Tambahkan foto di SITE.gallery pada content.js.</div>`;
+    if (docGrid) docGrid.innerHTML = allDocs.slice(1, 5).map((it, i) => makeDoc(it, i + 1)).join("");
+
+    const viewAll = $("historyViewAll");
+    if (viewAll) viewAll.addEventListener("click", () => {
+      const galleryLink = document.querySelector('[data-link="gallery"]');
+      if (galleryLink) galleryLink.click();
+    });
+  })();
 })();
