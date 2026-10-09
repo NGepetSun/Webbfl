@@ -1,20 +1,20 @@
 {
   "version": 2,
-  "updated": "2026-10-08T23:54:24.434Z",
+  "updated": "2026-10-09T03:08:58.241Z",
   "total": 73,
   "checked": 73,
-  "failed": 55,
-  "unknown": 55,
+  "failed": 71,
+  "unknown": 71,
   "live": [],
   "channels": [
     {
       "name": "Ronny Bons",
       "id": "UCJTq8YQXj-2_BNgwis4SGsg",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:51:21.087Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-09T03:08:42.721Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Kepal XTube",
@@ -22,8 +22,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:51:21.671Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:42.726Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Alexa cihuyyy",
@@ -31,8 +31,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:51:31.721Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:42.738Z",
+      "error": "HTTP 404"
     },
     {
       "name": "bhinneka",
@@ -40,8 +40,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:51:24.980Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:42.669Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Rigel",
@@ -49,44 +49,44 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:51:25.163Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:42.675Z",
+      "error": "HTTP 404"
     },
     {
       "name": "L666",
       "id": "UCfSzUAtec_V5wDcnhpO2BtQ",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:51:23.755Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-09T03:08:42.677Z",
+      "error": "HTTP 404"
     },
     {
       "name": "depoy",
       "id": "UCzFMuvYoldcSsAvEhzR0zvA",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:51:41.158Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-09T03:08:43.123Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Kyuzin",
       "id": "UCZHwiV6NsiV5dqbn4DHaJRw",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:51:36.243Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-09T03:08:43.165Z",
+      "error": "HTTP 404"
     },
     {
       "name": "CingBakar",
       "id": "UCR2hk03Jzm54sPlFiKMlQ1g",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:51:38.732Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-09T03:08:43.234Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Dean Smithhh",
@@ -94,8 +94,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:51:36.894Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:43.218Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Vigovel",
@@ -103,8 +103,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:51:36.191Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:43.221Z",
+      "error": "HTTP 404"
     },
     {
       "name": "gennn",
@@ -112,44 +112,44 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:51:44.768Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:43.235Z",
+      "error": "HTTP 404"
     },
     {
       "name": "zaaar",
       "id": "UCArSnxhpKhVAEsz59qxgUTw",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:51:46.843Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-09T03:08:43.672Z",
+      "error": "HTTP 500"
     },
     {
       "name": "Lica",
       "id": "UCzRbDnymGdZ3Q76BH319FyQ",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:51:48.325Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-09T03:08:43.664Z",
+      "error": "HTTP 404"
     },
     {
       "name": "BIMA ALVAREZ",
       "id": "UC1m-4p7PSs-1R5pXeu5-zcg",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:51:52.394Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-09T03:08:43.676Z",
+      "error": "HTTP 404"
     },
     {
       "name": "KinKin",
       "id": "UCRZ68rP5E5JUVXlQDOQajSw",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:51:51.279Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-09T03:08:43.703Z",
+      "error": "HTTP 404"
     },
     {
       "name": "RachaelTv",
@@ -157,8 +157,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:51:43.084Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:43.773Z",
+      "error": "HTTP 404"
     },
     {
       "name": "amey",
@@ -166,8 +166,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:51:56.230Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:43.734Z",
+      "error": "HTTP 404"
     },
     {
       "name": "buaya kayang",
@@ -175,8 +175,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:51:57.585Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:44.145Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Asep Ongyn",
@@ -184,7 +184,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:51:47.075Z",
+      "checkedAt": "2026-10-09T03:08:44.040Z",
       "error": "no confirmable candidate"
     },
     {
@@ -193,17 +193,17 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:51:59.535Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:44.133Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Moza ends u",
       "id": "UCoHosix7V3Zd411FgDsG3cg",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:00.502Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-09T03:08:44.232Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Cahya Dwi44",
@@ -211,8 +211,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:03.308Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:44.195Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Nathannidek",
@@ -220,26 +220,26 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:04.609Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:44.269Z",
+      "error": "HTTP 404"
     },
     {
       "name": "thoriqzi",
       "id": "UC6NHHEHU9_ryxdcX8Evpvwg",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:07.105Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-09T03:08:44.499Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Idinzzz",
       "id": "UCNhLmDbzYe3O06juIuqUtDg",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:08.230Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-09T03:08:44.584Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Cikko.",
@@ -247,35 +247,35 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:10.408Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:44.661Z",
+      "error": "HTTP 404"
     },
     {
       "name": "John",
       "id": "UCgrOxB6ZNPQeWJ1PpIHjXlQ",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:11.962Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-09T03:08:44.691Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Bengbeng",
       "id": "UCMcOg9uqZd1_5B8d8U1F-HQ",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:15.481Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-09T03:08:44.688Z",
+      "error": "HTTP 404"
     },
     {
       "name": "ROBBEYUU",
       "id": "UChQbgqNc8MARGDS17qmXiVw",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:11.859Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-09T03:08:44.782Z",
+      "error": "HTTP 404"
     },
     {
       "name": "supergarren",
@@ -283,8 +283,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:17.343Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:45.063Z",
+      "error": "HTTP 500"
     },
     {
       "name": "Noahahay",
@@ -292,26 +292,26 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:18.479Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:45.130Z",
+      "error": "HTTP 500"
     },
     {
       "name": "elmiraa",
       "id": "UC8zU0IoT0C9DX2CS45i-YxA",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:23.050Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-09T03:08:45.115Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Eko D Libra",
       "id": "UCb9tHaLY3XFM6V2Is_Z2R6A",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:25.180Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-09T03:08:45.187Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Adittroll",
@@ -319,8 +319,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:24.007Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:45.185Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Dimas Prayoga Akbar",
@@ -328,8 +328,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:30.767Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:45.237Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Nanzzz",
@@ -337,8 +337,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:33.040Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:45.521Z",
+      "error": "HTTP 404"
     },
     {
       "name": "belum mandi",
@@ -346,8 +346,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:18.698Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:45.592Z",
+      "error": "HTTP 404"
     },
     {
       "name": "skytod",
@@ -355,8 +355,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:34.587Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:45.615Z",
+      "error": "HTTP 404"
     },
     {
       "name": "FRY PHENG",
@@ -364,8 +364,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:43.435Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:45.650Z",
+      "error": "HTTP 404"
     },
     {
       "name": "N3R0",
@@ -373,17 +373,17 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:43.560Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:45.711Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Biwaaa",
       "id": "UCjXtiMRdCpV7_PrC0wOyq7Q",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:36.383Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-09T03:08:45.764Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Dhann",
@@ -391,8 +391,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:50.998Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:45.982Z",
+      "error": "HTTP 404"
     },
     {
       "name": "VicToR eL Morvinho",
@@ -400,8 +400,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:52.289Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:46.047Z",
+      "error": "HTTP 404"
     },
     {
       "name": "gga",
@@ -409,7 +409,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:53.508Z",
+      "checkedAt": "2026-10-09T03:08:56.520Z",
       "error": "no confirmable candidate"
     },
     {
@@ -418,7 +418,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:52:55.998Z",
+      "checkedAt": "2026-10-09T03:08:57.079Z",
       "error": "no confirmable candidate"
     },
     {
@@ -427,8 +427,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:53:02.682Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:46.165Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Danny",
@@ -436,8 +436,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:53:02.974Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:46.237Z",
+      "error": "HTTP 404"
     },
     {
       "name": "deepannn",
@@ -445,17 +445,17 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:53:10.824Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:46.539Z",
+      "error": "HTTP 500"
     },
     {
       "name": "PJ Time",
       "id": "UCKUAoZWFYyaBme-GEPUsLAA",
-      "state": "UNKNOWN",
-      "ok": false,
+      "state": "OFFLINE",
+      "ok": true,
       "live": false,
-      "checkedAt": "2026-10-08T23:53:11.790Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:58.241Z",
+      "source": "watch-confirmed"
     },
     {
       "name": "ValdiHEHE",
@@ -463,8 +463,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:53:13.257Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:46.621Z",
+      "error": "HTTP 404"
     },
     {
       "name": "DunZ",
@@ -472,8 +472,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:53:15.689Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:46.693Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Arss Sena",
@@ -481,8 +481,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:53:21.862Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:47.074Z",
+      "error": "HTTP 500"
     },
     {
       "name": "ZeFrowe",
@@ -490,8 +490,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:53:22.984Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:47.078Z",
+      "error": "HTTP 404"
     },
     {
       "name": "xJejeee",
@@ -499,8 +499,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:53:30.469Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:47.189Z",
+      "error": "HTTP 404"
     },
     {
       "name": "matthewah.",
@@ -508,8 +508,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:53:31.495Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:47.528Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Rebecca Raluna【 MaPle 】",
@@ -517,8 +517,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:53:32.989Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:47.538Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Aaannn",
@@ -526,8 +526,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:53:35.585Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:47.651Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Ernold Wednes",
@@ -535,8 +535,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:53:42.174Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:47.982Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Efrill Ryanda",
@@ -544,8 +544,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:53:42.300Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:48.078Z",
+      "error": "HTTP 404"
     },
     {
       "name": "steveninthesky",
@@ -553,8 +553,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:53:49.290Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:48.117Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Dina Clarity",
@@ -562,8 +562,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:53:51.216Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:48.440Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Alle’s Vellura",
@@ -571,17 +571,17 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:53:52.398Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:48.534Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Salmamanis",
       "id": "UC_kqZmyACWHVU0Ye6zjg43Q",
-      "state": "UNKNOWN",
-      "ok": false,
+      "state": "OFFLINE",
+      "ok": true,
       "live": false,
-      "checkedAt": "2026-10-08T23:53:49.287Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:55.754Z",
+      "source": "watch-confirmed"
     },
     {
       "name": "Syacei",
@@ -589,8 +589,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:54:01.036Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:48.895Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Nejaaa",
@@ -598,8 +598,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:54:02.078Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:48.998Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Quinza Jeane",
@@ -607,8 +607,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:54:08.638Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:49.351Z",
+      "error": "HTTP 404"
     },
     {
       "name": "elvanprmn",
@@ -616,8 +616,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:54:08.049Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:49.460Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Wansuw",
@@ -625,8 +625,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:54:10.562Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:49.805Z",
+      "error": "HTTP 404"
     },
     {
       "name": "PaddanG",
@@ -634,8 +634,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:54:11.765Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:49.994Z",
+      "error": "HTTP 500"
     },
     {
       "name": "llolokkk",
@@ -643,8 +643,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:54:04.886Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:50.261Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Blek Blekki",
@@ -652,8 +652,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:54:21.075Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:50.543Z",
+      "error": "HTTP 500"
     },
     {
       "name": "cyzarine",
@@ -661,8 +661,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-08T23:54:24.434Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-09T03:08:50.711Z",
+      "error": "HTTP 404"
     }
   ]
 }
