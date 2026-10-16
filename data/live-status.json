@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "updated": "2026-10-16T14:17:45.038Z",
+  "updated": "2026-10-16T18:06:54.500Z",
   "total": 73,
   "checked": 73,
-  "failed": 54,
-  "unknown": 54,
+  "failed": 59,
+  "unknown": 59,
   "live": [],
   "channels": [
     {
@@ -13,7 +13,7 @@
       "state": "OFFLINE",
       "ok": true,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:02.737Z",
+      "checkedAt": "2026-10-16T18:03:59.133Z",
       "source": "watch-confirmed"
     },
     {
@@ -22,7 +22,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:14:56.322Z",
+      "checkedAt": "2026-10-16T18:03:51.662Z",
       "error": "no confirmable candidate"
     },
     {
@@ -31,7 +31,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:08.266Z",
+      "checkedAt": "2026-10-16T18:04:03.799Z",
       "error": "no confirmable candidate"
     },
     {
@@ -40,7 +40,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:06.223Z",
+      "checkedAt": "2026-10-16T18:04:03.310Z",
       "error": "no confirmable candidate"
     },
     {
@@ -49,7 +49,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:06.155Z",
+      "checkedAt": "2026-10-16T18:04:03.321Z",
       "error": "no confirmable candidate"
     },
     {
@@ -58,7 +58,7 @@
       "state": "OFFLINE",
       "ok": true,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:05.913Z",
+      "checkedAt": "2026-10-16T18:04:02.935Z",
       "source": "watch-confirmed"
     },
     {
@@ -67,7 +67,7 @@
       "state": "OFFLINE",
       "ok": true,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:08.003Z",
+      "checkedAt": "2026-10-16T18:04:06.064Z",
       "source": "watch-confirmed"
     },
     {
@@ -76,7 +76,7 @@
       "state": "OFFLINE",
       "ok": true,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:14.736Z",
+      "checkedAt": "2026-10-16T18:04:12.429Z",
       "source": "watch-confirmed"
     },
     {
@@ -85,7 +85,7 @@
       "state": "OFFLINE",
       "ok": true,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:17.581Z",
+      "checkedAt": "2026-10-16T18:04:17.270Z",
       "source": "watch-confirmed"
     },
     {
@@ -94,7 +94,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:18.567Z",
+      "checkedAt": "2026-10-16T18:04:17.004Z",
       "error": "no confirmable candidate"
     },
     {
@@ -103,7 +103,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:17.135Z",
+      "checkedAt": "2026-10-16T18:04:16.929Z",
       "error": "no confirmable candidate"
     },
     {
@@ -112,7 +112,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:19.506Z",
+      "checkedAt": "2026-10-16T18:04:15.770Z",
       "error": "no confirmable candidate"
     },
     {
@@ -121,7 +121,7 @@
       "state": "OFFLINE",
       "ok": true,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:19.198Z",
+      "checkedAt": "2026-10-16T18:04:15.673Z",
       "source": "watch-confirmed"
     },
     {
@@ -130,7 +130,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:27.725Z",
+      "checkedAt": "2026-10-16T18:04:25.151Z",
       "error": "no confirmable candidate"
     },
     {
@@ -139,17 +139,17 @@
       "state": "OFFLINE",
       "ok": true,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:29.580Z",
+      "checkedAt": "2026-10-16T18:04:28.321Z",
       "source": "watch-confirmed"
     },
     {
       "name": "KinKin",
       "id": "UCRZ68rP5E5JUVXlQDOQajSw",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:29.145Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-16T18:04:29.452Z",
+      "error": "no confirmable candidate"
     },
     {
       "name": "RachaelTv",
@@ -157,7 +157,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:20.323Z",
+      "checkedAt": "2026-10-16T18:04:19.213Z",
       "error": "no confirmable candidate"
     },
     {
@@ -166,7 +166,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:19.424Z",
+      "checkedAt": "2026-10-16T18:04:17.310Z",
       "error": "no confirmable candidate"
     },
     {
@@ -175,7 +175,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:31.333Z",
+      "checkedAt": "2026-10-16T18:04:30.086Z",
       "error": "no confirmable candidate"
     },
     {
@@ -184,7 +184,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:19.735Z",
+      "checkedAt": "2026-10-16T18:04:17.593Z",
       "error": "no confirmable candidate"
     },
     {
@@ -193,7 +193,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:30.883Z",
+      "checkedAt": "2026-10-16T18:04:29.591Z",
       "error": "no confirmable candidate"
     },
     {
@@ -202,7 +202,7 @@
       "state": "OFFLINE",
       "ok": true,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:31.800Z",
+      "checkedAt": "2026-10-16T18:04:32.035Z",
       "source": "watch-confirmed"
     },
     {
@@ -211,7 +211,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:39.317Z",
+      "checkedAt": "2026-10-16T18:04:39.328Z",
       "error": "no confirmable candidate"
     },
     {
@@ -220,7 +220,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:40.362Z",
+      "checkedAt": "2026-10-16T18:04:40.066Z",
       "error": "no confirmable candidate"
     },
     {
@@ -229,7 +229,7 @@
       "state": "OFFLINE",
       "ok": true,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:40.740Z",
+      "checkedAt": "2026-10-16T18:04:41.085Z",
       "source": "watch-confirmed"
     },
     {
@@ -238,7 +238,7 @@
       "state": "OFFLINE",
       "ok": true,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:43.943Z",
+      "checkedAt": "2026-10-16T18:04:43.009Z",
       "source": "watch-confirmed"
     },
     {
@@ -247,7 +247,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:49.225Z",
+      "checkedAt": "2026-10-16T18:04:43.608Z",
       "error": "no confirmable candidate"
     },
     {
@@ -256,17 +256,17 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:43.439Z",
+      "checkedAt": "2026-10-16T18:04:45.105Z",
       "error": "no confirmable candidate"
     },
     {
       "name": "Bengbeng",
       "id": "UCMcOg9uqZd1_5B8d8U1F-HQ",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:50.841Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-16T18:04:53.473Z",
+      "error": "no confirmable candidate"
     },
     {
       "name": "ROBBEYUU",
@@ -274,7 +274,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:45.878Z",
+      "checkedAt": "2026-10-16T18:04:48.909Z",
       "error": "no confirmable candidate"
     },
     {
@@ -283,7 +283,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:52.685Z",
+      "checkedAt": "2026-10-16T18:04:52.881Z",
       "error": "no confirmable candidate"
     },
     {
@@ -292,7 +292,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:56.865Z",
+      "checkedAt": "2026-10-16T18:04:55.086Z",
       "error": "no confirmable candidate"
     },
     {
@@ -301,7 +301,7 @@
       "state": "OFFLINE",
       "ok": true,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:56.315Z",
+      "checkedAt": "2026-10-16T18:04:56.978Z",
       "source": "watch-confirmed"
     },
     {
@@ -310,17 +310,17 @@
       "state": "OFFLINE",
       "ok": true,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:58.881Z",
+      "checkedAt": "2026-10-16T18:04:57.867Z",
       "source": "watch-confirmed"
     },
     {
       "name": "Adittroll",
       "id": "UC9jZ5Wa13rtmCa7Gi1C94aQ",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:16:02.429Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-16T18:05:02.629Z",
+      "error": "no confirmable candidate"
     },
     {
       "name": "Dimas Prayoga Akbar",
@@ -328,7 +328,7 @@
       "state": "OFFLINE",
       "ok": true,
       "live": false,
-      "checkedAt": "2026-10-16T14:16:02.537Z",
+      "checkedAt": "2026-10-16T18:05:05.368Z",
       "source": "watch-confirmed"
     },
     {
@@ -337,7 +337,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:16:04.759Z",
+      "checkedAt": "2026-10-16T18:05:07.466Z",
       "error": "no confirmable candidate"
     },
     {
@@ -346,7 +346,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:15:56.520Z",
+      "checkedAt": "2026-10-16T18:04:55.316Z",
       "error": "no confirmable candidate"
     },
     {
@@ -355,7 +355,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:16:07.408Z",
+      "checkedAt": "2026-10-16T18:05:10.129Z",
       "error": "no confirmable candidate"
     },
     {
@@ -364,7 +364,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:16:07.984Z",
+      "checkedAt": "2026-10-16T18:05:13.104Z",
       "error": "no confirmable candidate"
     },
     {
@@ -373,17 +373,17 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:16:09.800Z",
+      "checkedAt": "2026-10-16T18:05:16.233Z",
       "error": "no confirmable candidate"
     },
     {
       "name": "Biwaaa",
       "id": "UCjXtiMRdCpV7_PrC0wOyq7Q",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:16:09.341Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-16T18:05:15.199Z",
+      "error": "no confirmable candidate"
     },
     {
       "name": "Dhann",
@@ -391,7 +391,7 @@
       "state": "OFFLINE",
       "ok": true,
       "live": false,
-      "checkedAt": "2026-10-16T14:16:15.326Z",
+      "checkedAt": "2026-10-16T18:05:23.766Z",
       "source": "watch-confirmed"
     },
     {
@@ -400,7 +400,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:16:16.469Z",
+      "checkedAt": "2026-10-16T18:05:26.293Z",
       "error": "no confirmable candidate"
     },
     {
@@ -409,7 +409,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:16:25.311Z",
+      "checkedAt": "2026-10-16T18:05:30.742Z",
       "error": "no confirmable candidate"
     },
     {
@@ -418,7 +418,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:16:19.984Z",
+      "checkedAt": "2026-10-16T18:05:32.580Z",
       "error": "no confirmable candidate"
     },
     {
@@ -427,7 +427,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:16:27.369Z",
+      "checkedAt": "2026-10-16T18:05:34.471Z",
       "error": "no confirmable candidate"
     },
     {
@@ -436,7 +436,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:16:29.327Z",
+      "checkedAt": "2026-10-16T18:05:34.817Z",
       "error": "no confirmable candidate"
     },
     {
@@ -445,17 +445,17 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:16:33.442Z",
+      "checkedAt": "2026-10-16T18:05:43.577Z",
       "error": "no confirmable candidate"
     },
     {
       "name": "PJ Time",
       "id": "UCKUAoZWFYyaBme-GEPUsLAA",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:16:35.407Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-16T18:05:46.408Z",
+      "error": "no confirmable candidate"
     },
     {
       "name": "ValdiHEHE",
@@ -463,7 +463,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:16:38.979Z",
+      "checkedAt": "2026-10-16T18:05:50.456Z",
       "error": "no confirmable candidate"
     },
     {
@@ -472,7 +472,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:16:44.551Z",
+      "checkedAt": "2026-10-16T18:05:52.187Z",
       "error": "no confirmable candidate"
     },
     {
@@ -481,7 +481,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:16:45.765Z",
+      "checkedAt": "2026-10-16T18:05:53.103Z",
       "error": "no confirmable candidate"
     },
     {
@@ -490,7 +490,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:16:48.321Z",
+      "checkedAt": "2026-10-16T18:05:53.659Z",
       "error": "no confirmable candidate"
     },
     {
@@ -499,7 +499,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:16:50.921Z",
+      "checkedAt": "2026-10-16T18:06:02.743Z",
       "error": "no confirmable candidate"
     },
     {
@@ -508,7 +508,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:16:54.081Z",
+      "checkedAt": "2026-10-16T18:06:04.814Z",
       "error": "no confirmable candidate"
     },
     {
@@ -517,7 +517,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:16:57.245Z",
+      "checkedAt": "2026-10-16T18:06:09.986Z",
       "error": "no confirmable candidate"
     },
     {
@@ -526,7 +526,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:17:02.973Z",
+      "checkedAt": "2026-10-16T18:06:12.354Z",
       "error": "no confirmable candidate"
     },
     {
@@ -535,7 +535,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:17:04.791Z",
+      "checkedAt": "2026-10-16T18:06:12.030Z",
       "error": "no confirmable candidate"
     },
     {
@@ -544,7 +544,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:17:07.459Z",
+      "checkedAt": "2026-10-16T18:06:13.203Z",
       "error": "no confirmable candidate"
     },
     {
@@ -553,7 +553,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:17:09.105Z",
+      "checkedAt": "2026-10-16T18:06:21.560Z",
       "error": "no confirmable candidate"
     },
     {
@@ -562,7 +562,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:17:13.235Z",
+      "checkedAt": "2026-10-16T18:06:23.946Z",
       "error": "no confirmable candidate"
     },
     {
@@ -571,7 +571,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:17:16.205Z",
+      "checkedAt": "2026-10-16T18:06:29.859Z",
       "error": "no confirmable candidate"
     },
     {
@@ -580,7 +580,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:17:15.700Z",
+      "checkedAt": "2026-10-16T18:06:26.113Z",
       "error": "no confirmable candidate"
     },
     {
@@ -589,7 +589,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:17:22.364Z",
+      "checkedAt": "2026-10-16T18:06:31.536Z",
       "error": "no confirmable candidate"
     },
     {
@@ -598,7 +598,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:17:26.685Z",
+      "checkedAt": "2026-10-16T18:06:33.099Z",
       "error": "no confirmable candidate"
     },
     {
@@ -607,7 +607,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:17:27.402Z",
+      "checkedAt": "2026-10-16T18:06:41.638Z",
       "error": "no confirmable candidate"
     },
     {
@@ -616,7 +616,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:17:31.586Z",
+      "checkedAt": "2026-10-16T18:06:43.056Z",
       "error": "no confirmable candidate"
     },
     {
@@ -625,7 +625,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:17:34.713Z",
+      "checkedAt": "2026-10-16T18:06:45.933Z",
       "error": "no confirmable candidate"
     },
     {
@@ -634,7 +634,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:17:35.137Z",
+      "checkedAt": "2026-10-16T18:06:49.809Z",
       "error": "no confirmable candidate"
     },
     {
@@ -643,7 +643,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:17:26.082Z",
+      "checkedAt": "2026-10-16T18:06:35.223Z",
       "error": "no confirmable candidate"
     },
     {
@@ -652,7 +652,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:17:44.894Z",
+      "checkedAt": "2026-10-16T18:06:52.291Z",
       "error": "no confirmable candidate"
     },
     {
@@ -661,7 +661,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-16T14:17:45.038Z",
+      "checkedAt": "2026-10-16T18:06:54.500Z",
       "error": "no confirmable candidate"
     }
   ]
