@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "updated": "2026-10-29T23:18:30.079Z",
+  "updated": "2026-10-30T02:39:30.657Z",
   "total": 73,
   "checked": 73,
-  "failed": 70,
-  "unknown": 70,
+  "failed": 73,
+  "unknown": 73,
   "live": [],
   "channels": [
     {
@@ -13,7 +13,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:17:58.219Z",
+      "checkedAt": "2026-10-30T02:39:25.045Z",
       "error": "HTTP 404"
     },
     {
@@ -22,7 +22,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:17:58.400Z",
+      "checkedAt": "2026-10-30T02:39:25.124Z",
       "error": "HTTP 404"
     },
     {
@@ -31,7 +31,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:17:58.222Z",
+      "checkedAt": "2026-10-30T02:39:25.053Z",
       "error": "HTTP 404"
     },
     {
@@ -40,8 +40,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:17:58.263Z",
-      "error": "HTTP 500"
+      "checkedAt": "2026-10-30T02:39:25.096Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Rigel",
@@ -49,8 +49,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:17:58.260Z",
-      "error": "HTTP 500"
+      "checkedAt": "2026-10-30T02:39:25.048Z",
+      "error": "HTTP 404"
     },
     {
       "name": "L666",
@@ -58,7 +58,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:17:58.187Z",
+      "checkedAt": "2026-10-30T02:39:25.051Z",
       "error": "HTTP 404"
     },
     {
@@ -67,7 +67,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:17:58.739Z",
+      "checkedAt": "2026-10-30T02:39:25.506Z",
       "error": "HTTP 404"
     },
     {
@@ -76,17 +76,17 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:17:58.795Z",
+      "checkedAt": "2026-10-30T02:39:25.576Z",
       "error": "HTTP 404"
     },
     {
       "name": "CingBakar",
       "id": "UCR2hk03Jzm54sPlFiKMlQ1g",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:12.306Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-30T02:39:25.611Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Dean Smithhh",
@@ -94,7 +94,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:17:58.997Z",
+      "checkedAt": "2026-10-30T02:39:25.526Z",
       "error": "HTTP 404"
     },
     {
@@ -103,7 +103,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:17:59.011Z",
+      "checkedAt": "2026-10-30T02:39:25.592Z",
       "error": "HTTP 404"
     },
     {
@@ -112,7 +112,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:17:59.018Z",
+      "checkedAt": "2026-10-30T02:39:25.605Z",
       "error": "HTTP 404"
     },
     {
@@ -121,7 +121,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:17:59.292Z",
+      "checkedAt": "2026-10-30T02:39:25.962Z",
       "error": "HTTP 404"
     },
     {
@@ -130,7 +130,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:17:59.485Z",
+      "checkedAt": "2026-10-30T02:39:25.987Z",
       "error": "HTTP 404"
     },
     {
@@ -139,7 +139,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:17:59.856Z",
+      "checkedAt": "2026-10-30T02:39:26.126Z",
       "error": "HTTP 404"
     },
     {
@@ -148,7 +148,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:17:59.775Z",
+      "checkedAt": "2026-10-30T02:39:26.052Z",
       "error": "HTTP 404"
     },
     {
@@ -157,7 +157,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:17:59.627Z",
+      "checkedAt": "2026-10-30T02:39:26.057Z",
       "error": "HTTP 404"
     },
     {
@@ -166,8 +166,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:17:59.592Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-30T02:39:26.128Z",
+      "error": "HTTP 404"
     },
     {
       "name": "buaya kayang",
@@ -175,8 +175,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:00.047Z",
-      "error": "HTTP 404"
+      "checkedAt": "2026-10-30T02:39:26.505Z",
+      "error": "HTTP 500"
     },
     {
       "name": "Asep Ongyn",
@@ -184,7 +184,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:00.254Z",
+      "checkedAt": "2026-10-30T02:39:26.461Z",
       "error": "HTTP 404"
     },
     {
@@ -193,8 +193,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:12.913Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-30T02:39:26.533Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Moza ends u",
@@ -202,8 +202,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:00.437Z",
-      "error": "HTTP 500"
+      "checkedAt": "2026-10-30T02:39:26.550Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Cahya Dwi44",
@@ -211,8 +211,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:12.992Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-30T02:39:26.614Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Nathannidek",
@@ -220,7 +220,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:00.602Z",
+      "checkedAt": "2026-10-30T02:39:26.653Z",
       "error": "HTTP 404"
     },
     {
@@ -229,7 +229,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:00.892Z",
+      "checkedAt": "2026-10-30T02:39:26.922Z",
       "error": "HTTP 404"
     },
     {
@@ -238,7 +238,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:01.199Z",
+      "checkedAt": "2026-10-30T02:39:26.982Z",
       "error": "HTTP 404"
     },
     {
@@ -247,7 +247,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:01.153Z",
+      "checkedAt": "2026-10-30T02:39:27.092Z",
       "error": "HTTP 404"
     },
     {
@@ -256,8 +256,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:13.322Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-30T02:39:27.053Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Bengbeng",
@@ -265,17 +265,17 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:01.696Z",
+      "checkedAt": "2026-10-30T02:39:27.120Z",
       "error": "HTTP 404"
     },
     {
       "name": "ROBBEYUU",
       "id": "UChQbgqNc8MARGDS17qmXiVw",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:08.079Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-30T02:39:27.108Z",
+      "error": "HTTP 404"
     },
     {
       "name": "supergarren",
@@ -283,8 +283,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:02.269Z",
-      "error": "HTTP 500"
+      "checkedAt": "2026-10-30T02:39:27.382Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Noahahay",
@@ -292,7 +292,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:02.810Z",
+      "checkedAt": "2026-10-30T02:39:27.446Z",
       "error": "HTTP 404"
     },
     {
@@ -301,8 +301,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:03.438Z",
-      "error": "HTTP 500"
+      "checkedAt": "2026-10-30T02:39:27.506Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Eko D Libra",
@@ -310,7 +310,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:03.989Z",
+      "checkedAt": "2026-10-30T02:39:27.583Z",
       "error": "HTTP 404"
     },
     {
@@ -319,7 +319,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:04.538Z",
+      "checkedAt": "2026-10-30T02:39:27.577Z",
       "error": "HTTP 404"
     },
     {
@@ -328,7 +328,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:05.089Z",
+      "checkedAt": "2026-10-30T02:39:27.602Z",
       "error": "HTTP 404"
     },
     {
@@ -337,7 +337,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:05.639Z",
+      "checkedAt": "2026-10-30T02:39:27.840Z",
       "error": "HTTP 404"
     },
     {
@@ -346,7 +346,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:06.186Z",
+      "checkedAt": "2026-10-30T02:39:27.907Z",
       "error": "HTTP 404"
     },
     {
@@ -355,7 +355,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:06.734Z",
+      "checkedAt": "2026-10-30T02:39:28.048Z",
       "error": "HTTP 404"
     },
     {
@@ -364,7 +364,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:07.282Z",
+      "checkedAt": "2026-10-30T02:39:28.025Z",
       "error": "HTTP 404"
     },
     {
@@ -373,17 +373,17 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:20.530Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-30T02:39:28.054Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Biwaaa",
       "id": "UCjXtiMRdCpV7_PrC0wOyq7Q",
-      "state": "OFFLINE",
-      "ok": true,
+      "state": "UNKNOWN",
+      "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:17.134Z",
-      "source": "watch-confirmed"
+      "checkedAt": "2026-10-30T02:39:28.127Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Dhann",
@@ -391,8 +391,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:25.081Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-30T02:39:28.293Z",
+      "error": "HTTP 404"
     },
     {
       "name": "VicToR eL Morvinho",
@@ -400,7 +400,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:13.458Z",
+      "checkedAt": "2026-10-30T02:39:28.394Z",
       "error": "HTTP 404"
     },
     {
@@ -409,8 +409,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:13.827Z",
-      "error": "HTTP 500"
+      "checkedAt": "2026-10-30T02:39:28.534Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Fajri",
@@ -418,7 +418,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:14.016Z",
+      "checkedAt": "2026-10-30T02:39:28.528Z",
       "error": "HTTP 404"
     },
     {
@@ -427,7 +427,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:14.229Z",
+      "checkedAt": "2026-10-30T02:39:28.514Z",
       "error": "HTTP 404"
     },
     {
@@ -436,8 +436,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:14.447Z",
-      "error": "HTTP 500"
+      "checkedAt": "2026-10-30T02:39:28.579Z",
+      "error": "HTTP 404"
     },
     {
       "name": "deepannn",
@@ -445,8 +445,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:26.552Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-30T02:39:28.794Z",
+      "error": "HTTP 404"
     },
     {
       "name": "PJ Time",
@@ -454,7 +454,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:14.819Z",
+      "checkedAt": "2026-10-30T02:39:28.852Z",
       "error": "HTTP 404"
     },
     {
@@ -463,8 +463,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:15.152Z",
-      "error": "HTTP 500"
+      "checkedAt": "2026-10-30T02:39:28.970Z",
+      "error": "HTTP 404"
     },
     {
       "name": "DunZ",
@@ -472,7 +472,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:15.372Z",
+      "checkedAt": "2026-10-30T02:39:29.068Z",
       "error": "HTTP 404"
     },
     {
@@ -481,7 +481,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:15.774Z",
+      "checkedAt": "2026-10-30T02:39:29.063Z",
       "error": "HTTP 404"
     },
     {
@@ -490,7 +490,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:16.079Z",
+      "checkedAt": "2026-10-30T02:39:29.066Z",
       "error": "HTTP 404"
     },
     {
@@ -499,8 +499,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:30.079Z",
-      "error": "no confirmable candidate"
+      "checkedAt": "2026-10-30T02:39:29.247Z",
+      "error": "HTTP 404"
     },
     {
       "name": "matthewah.",
@@ -508,7 +508,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:16.631Z",
+      "checkedAt": "2026-10-30T02:39:29.334Z",
       "error": "HTTP 404"
     },
     {
@@ -517,7 +517,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:17.235Z",
+      "checkedAt": "2026-10-30T02:39:29.428Z",
       "error": "HTTP 404"
     },
     {
@@ -526,7 +526,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:17.679Z",
+      "checkedAt": "2026-10-30T02:39:29.524Z",
       "error": "HTTP 404"
     },
     {
@@ -535,7 +535,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:17.896Z",
+      "checkedAt": "2026-10-30T02:39:29.520Z",
       "error": "HTTP 404"
     },
     {
@@ -544,7 +544,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:18.233Z",
+      "checkedAt": "2026-10-30T02:39:29.580Z",
       "error": "HTTP 404"
     },
     {
@@ -553,7 +553,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:18.505Z",
+      "checkedAt": "2026-10-30T02:39:29.701Z",
       "error": "HTTP 404"
     },
     {
@@ -562,7 +562,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:18.817Z",
+      "checkedAt": "2026-10-30T02:39:29.790Z",
       "error": "HTTP 404"
     },
     {
@@ -571,7 +571,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:19.091Z",
+      "checkedAt": "2026-10-30T02:39:29.882Z",
       "error": "HTTP 404"
     },
     {
@@ -580,7 +580,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:19.362Z",
+      "checkedAt": "2026-10-30T02:39:29.979Z",
       "error": "HTTP 404"
     },
     {
@@ -589,7 +589,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:19.642Z",
+      "checkedAt": "2026-10-30T02:39:30.022Z",
       "error": "HTTP 404"
     },
     {
@@ -598,7 +598,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:19.951Z",
+      "checkedAt": "2026-10-30T02:39:30.043Z",
       "error": "HTTP 404"
     },
     {
@@ -607,7 +607,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:20.189Z",
+      "checkedAt": "2026-10-30T02:39:30.155Z",
       "error": "HTTP 404"
     },
     {
@@ -616,7 +616,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:20.506Z",
+      "checkedAt": "2026-10-30T02:39:30.244Z",
       "error": "HTTP 404"
     },
     {
@@ -625,7 +625,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:20.805Z",
+      "checkedAt": "2026-10-30T02:39:30.459Z",
       "error": "HTTP 404"
     },
     {
@@ -634,8 +634,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:21.059Z",
-      "error": "HTTP 404"
+      "checkedAt": "2026-10-30T02:39:30.507Z",
+      "error": "HTTP 500"
     },
     {
       "name": "llolokkk",
@@ -643,8 +643,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:21.168Z",
-      "error": "HTTP 500"
+      "checkedAt": "2026-10-30T02:39:30.484Z",
+      "error": "HTTP 404"
     },
     {
       "name": "Blek Blekki",
@@ -652,8 +652,8 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:21.353Z",
-      "error": "HTTP 404"
+      "checkedAt": "2026-10-30T02:39:30.510Z",
+      "error": "HTTP 500"
     },
     {
       "name": "cyzarine",
@@ -661,7 +661,7 @@
       "state": "UNKNOWN",
       "ok": false,
       "live": false,
-      "checkedAt": "2026-10-29T23:18:21.605Z",
+      "checkedAt": "2026-10-30T02:39:30.657Z",
       "error": "HTTP 404"
     }
   ]
